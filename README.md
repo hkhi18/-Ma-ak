@@ -6,7 +6,7 @@
 
 منصة ويب تجعل وصولية الفعاليات معلومة معلنة قبل الحضور — لا مفاجأة بعده.
 
-[🌐 النسخة الحية](https://celadon-buttercream-f6b340.netlify.app) · [SDAIA Academy](https://github.com/SDAIAAcademy)
+[🌐 النسخة الحية](https://ma-ak-a9pc.vercel.app/) · [SDAIA Academy](https://github.com/SDAIAAcademy)
 
 </div>
 
