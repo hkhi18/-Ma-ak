@@ -1,0 +1,3072 @@
+const { useState, useEffect, useMemo } = React;
+
+// --- Clean SVG Icons (Lucide Style, Zero Emojis, Zero Sparkles) ---
+const Icons = {
+  Search: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="m21 21-4.3-4.3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Wheelchair: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <circle cx="9" cy="4" r="2" strokeWidth="2"/>
+      <path d="M12 4v4l3 3h3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M9 19a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" strokeWidth="2" strokeLinecap="round"/>
+      <path d="m14 19 3 2" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  ),
+  Ear: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a2 2 0 1 1-4 0c0-2.5 2-4 4-6a2.5 2.5 0 0 0-5-2.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Eye: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="12" r="3" strokeWidth="2"/>
+    </svg>
+  ),
+  Brain: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-5.04Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-5.04Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  HandSign: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M18 11V6a2 2 0 0 0-4 0v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M14 10V4a2 2 0 0 0-4 0v7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10 10.5V6a2 2 0 0 0-4 0v8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M6 14v-1.5a2 2 0 0 0-4 0v5.5a6 6 0 0 0 6 6h4a8 8 0 0 0 8-8v-3.5a2 2 0 0 0-4 0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Check: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M20 6 9 17l-5-5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  X: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M18 6 6 18M6 6l12 12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  MapPin: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="10" r="3" strokeWidth="2"/>
+    </svg>
+  ),
+  Calendar: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="4" rx="2" strokeWidth="2"/>
+      <path d="M16 2v4M8 2v4M3 10h18" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  ),
+  Clock: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+      <path d="M12 6v6l4 2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Bookmark: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill={props.filled ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+      <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  MessageSquare: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Send: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="m22 2-7 20-4-9-9-4Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M22 2 11 13" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  AlertTriangle: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M12 9v4M12 17h.01" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  ),
+  Sliders: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  ShieldCheck: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="m9 12 2 2 4-4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  PlusCircle: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+      <path d="M12 8v8M8 12h8" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  ),
+  ArrowLeft: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="m12 19-7-7 7-7M19 12H5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  ArrowRight: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Building: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <rect width="16" height="20" x="4" y="2" rx="2" strokeWidth="2"/>
+      <path d="M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  ),
+  Layers: (props) => (
+    <svg className={props.className || "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="m22 12.5-8.58 3.91a2 2 0 0 1-1.66 0L2 12.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="m22 17.5-8.58 3.91a2 2 0 0 1-1.66 0L2 17.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  UserAvatarSilhouette: (props) => (
+    <svg className={props.className || "w-8 h-8"} viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="8" r="4" fill="#94A3B8" />
+      <path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8" fill="#94A3B8" />
+    </svg>
+  ),
+};
+
+// --- Brand Logo Component with Map Pin Center in Clean Charcoal & Brand Colors ---
+function BrandLogo({ size = "md", showSubtitle = true, isDark = false }) {
+  const isLg = size === "lg";
+  const isSm = size === "sm";
+
+  return (
+    <div className="flex items-center gap-3 select-none">
+      <div className={`relative flex items-center justify-center ${isLg ? 'w-14 h-14' : isSm ? 'w-8 h-8' : 'w-11 h-11'}`}>
+        <svg viewBox="0 0 120 120" className="w-full h-full drop-shadow-sm">
+          {/* Central Ticket in Solid Charcoal */}
+          <rect x="35" y="35" width="50" height="50" rx="10" transform="rotate(-15 60 60)" fill="#1E293B" />
+          
+          {/* Exact Location Map Pin in Center of Ticket */}
+          <g transform="rotate(-15 60 60)">
+            <path 
+              d="M60 48 C55.5 48 52 51.5 52 56 C52 61 60 69 60 69 C60 69 68 61 68 56 C68 51.5 64.5 48 60 48 Z" 
+              fill="#FFFFFF" 
+            />
+            <circle cx="60" cy="55" r="2.8" fill="#028090" />
+          </g>
+          
+          {/* 5 Surrounding Figures in Core Palette */}
+          <circle cx="34" cy="28" r="8" fill="#028090" />
+          <path d="M22 46 C24 35, 42 35, 44 48" stroke="#028090" strokeWidth="6" strokeLinecap="round" fill="none" />
+
+          <circle cx="86" cy="28" r="8" fill="#F26440" />
+          <path d="M76 48 C78 35, 96 35, 98 46" stroke="#F26440" strokeWidth="6" strokeLinecap="round" fill="none" />
+
+          <circle cx="104" cy="68" r="8" fill="#EAA812" />
+          <path d="M96 82 C108 72, 108 58, 96 54" stroke="#EAA812" strokeWidth="6" strokeLinecap="round" fill="none" />
+
+          <circle cx="60" cy="104" r="8" fill="#2E8B57" />
+          <path d="M42 96 C48 108, 72 108, 78 96" stroke="#2E8B57" strokeWidth="6" strokeLinecap="round" fill="none" />
+
+          <circle cx="16" cy="68" r="8" fill="#028090" />
+          <path d="M24 54 C12 58, 12 72, 24 82" stroke="#028090" strokeWidth="6" strokeLinecap="round" fill="none" />
+        </svg>
+      </div>
+
+      <div className="flex flex-col justify-center text-right">
+        <span className={`font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'} ${isLg ? 'text-3xl' : isSm ? 'text-lg' : 'text-2xl'}`}>
+          مَعَك
+        </span>
+        {showSubtitle && (
+          <span className={`font-medium ${isDark ? 'text-slate-300' : 'text-slate-500'} ${isLg ? 'text-xs' : 'text-[11px]'}`}>
+            فعاليات للجميع بلا عوائق
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+const initialEvents = [
+  {
+    id: 'evt-001',
+    title: 'مؤتمر الرياض للذكاء الاصطناعي والتقنيات الناشئة 2026',
+    description: 'ملتقى ريادي يجمع نخبة الباحثين وصناع القرار في مجالات الذكاء الاصطناعي والحلول الرقمية الشاملة، متضمن جلسات نقاشية ومعرض ابتكارات مجهز بالكامل وفق المعايير العالمية للإتاحة وسهولة الوصول.',
+    category: 'مؤتمر تقني',
+    city: 'الرياض',
+    locationName: 'مركز الملك عبد العزيز الدولي للمؤتمرات',
+    address: 'طريق الملك عبد العزيز، حي الهدا، الرياض',
+    eventDate: '2026-10-15',
+    startTime: '09:00 ص',
+    endTime: '05:00 م',
+    price: 'مجاني بالتسجيل المسبق',
+    imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80',
+    facilityImages: [
+      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80'
+    ],
+    organizerId: 'org-01',
+    organizerName: 'هيئة التحول الرقمي والذكاء الاصطناعي',
+    features: {
+      hasWheelchairAccess: true,
+      hasRamps: true,
+      hasAccessibleElevators: true,
+      hasAccessibleParking: true,
+      hasAccessibleRestrooms: true,
+      hasStepFreeRoute: true,
+      hasSignLanguageInterpreter: true,
+      hasLiveCaptions: true,
+      hasHearingLoop: true,
+      hasVisualAlerts: true,
+      hasAudioDescription: true,
+      hasBrailleSignage: true,
+      hasHighContrastSignage: true,
+      hasTactilePaving: true,
+      allowsGuideDogs: true,
+      hasQuietRoom: true,
+      hasLowLightingArea: false,
+      hasLowNoiseEnvironment: true,
+      hasSensoryFriendlySchedule: true,
+    },
+    overallScore: 96,
+    pillarScores: { mobility: 100, hearing: 100, vision: 100, sensory: 85 },
+    reviewsCount: 38,
+    averageRating: 4.9,
+    featured: true,
+  },
+  {
+    id: 'evt-002',
+    title: 'معرض نور الرياض للفنون المعاصرة والتجارب الضوئية',
+    description: 'تجربة بصرية وحسية استثنائية في الهواء الطلق والقاعات المغلقة بمشاركة فنانين سعوديين وعالميين، مع توفير مسارات انسيابية وتجارب حسية مهيأة لكافة الزوار.',
+    category: 'معرض فني',
+    city: 'الرياض',
+    locationName: 'حي جاكس للفنون، الدرعية',
+    address: 'الدرعية الجديدة، الرياض',
+    eventDate: '2026-11-22',
+    startTime: '04:30 م',
+    endTime: '11:30 م',
+    price: '35 ريال',
+    imageUrl: 'https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1200&q=80',
+    facilityImages: [
+      'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=800&q=80'
+    ],
+    organizerId: 'org-02',
+    organizerName: 'مؤسسة بينالي الدرعية للفنون',
+    features: {
+      hasWheelchairAccess: true,
+      hasRamps: true,
+      hasAccessibleElevators: true,
+      hasAccessibleParking: true,
+      hasAccessibleRestrooms: true,
+      hasStepFreeRoute: true,
+      hasSignLanguageInterpreter: false,
+      hasLiveCaptions: false,
+      hasHearingLoop: false,
+      hasVisualAlerts: true,
+      hasAudioDescription: true,
+      hasBrailleSignage: true,
+      hasHighContrastSignage: true,
+      hasTactilePaving: false,
+      allowsGuideDogs: true,
+      hasQuietRoom: true,
+      hasLowLightingArea: true,
+      hasLowNoiseEnvironment: false,
+      hasSensoryFriendlySchedule: true,
+    },
+    overallScore: 82,
+    pillarScores: { mobility: 100, hearing: 25, vision: 85, sensory: 75 },
+    reviewsCount: 24,
+    averageRating: 4.6,
+    featured: true,
+  },
+  {
+    id: 'evt-003',
+    title: 'أمسية الأوركسترا الوطنية السعودية الكلاسيكية',
+    description: 'حفل موسيقي رفيع تقدمه الفرقة الوطنية مع باقة من المقطوعات التراثية المعزوفة بأحدث تقنيات الصوت المحيطي، مع مقاعد أمامية مهيأة بالكامل لأنظمة التضخيم السمعي والكراسي المتحركة.',
+    category: 'حفل موسيقي',
+    city: 'جدة',
+    locationName: 'دار الفنون والموسيقى، الواجهة البحرية',
+    address: 'طريق الكورنيش، الشاطئ، جدة',
+    eventDate: '2026-12-05',
+    startTime: '08:00 م',
+    endTime: '10:30 م',
+    price: '120 ريال',
+    imageUrl: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=1200&q=80',
+    facilityImages: [
+      'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'
+    ],
+    organizerId: 'org-03',
+    organizerName: 'هيئة الموسيقى والفنون الأدائية',
+    features: {
+      hasWheelchairAccess: true,
+      hasRamps: true,
+      hasAccessibleElevators: true,
+      hasAccessibleParking: true,
+      hasAccessibleRestrooms: true,
+      hasStepFreeRoute: true,
+      hasSignLanguageInterpreter: false,
+      hasLiveCaptions: true,
+      hasHearingLoop: true,
+      hasVisualAlerts: true,
+      hasAudioDescription: false,
+      hasBrailleSignage: true,
+      hasHighContrastSignage: true,
+      hasTactilePaving: true,
+      allowsGuideDogs: true,
+      hasQuietRoom: true,
+      hasLowLightingArea: true,
+      hasLowNoiseEnvironment: false,
+      hasSensoryFriendlySchedule: false,
+    },
+    overallScore: 86,
+    pillarScores: { mobility: 100, hearing: 80, vision: 75, sensory: 55 },
+    reviewsCount: 19,
+    averageRating: 4.7,
+    featured: false,
+  },
+  {
+    id: 'evt-004',
+    title: 'ورشة عمل التصميم الرقمي الشامل والواجهات الميسرة',
+    description: 'ورشة تدريبية تطبيقية للمصممين والمطورين لتعلم بناء تطبيقات ومنصات تلتزم بأعلى معايير الوصول WCAG، مع محطات عمل مجهزة بحواسيب ناطقة وشاشات برايل ومترجمي لغة إشارة.',
+    category: 'ورشة عمل',
+    city: 'الخبر',
+    locationName: 'مساحة الابتكار التقني وريادة الأعمال',
+    address: 'حي الحزام الذهبي، الخبر',
+    eventDate: '2026-09-18',
+    startTime: '10:00 ص',
+    endTime: '02:00 م',
+    price: 'مجاني للمختصين',
+    imageUrl: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80',
+    facilityImages: [
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'
+    ],
+    organizerId: 'org-04',
+    organizerName: 'مبادرة التقنية الميسرة للجميع',
+    features: {
+      hasWheelchairAccess: true,
+      hasRamps: true,
+      hasAccessibleElevators: true,
+      hasAccessibleParking: true,
+      hasAccessibleRestrooms: true,
+      hasStepFreeRoute: true,
+      hasSignLanguageInterpreter: true,
+      hasLiveCaptions: true,
+      hasHearingLoop: true,
+      hasVisualAlerts: true,
+      hasAudioDescription: true,
+      hasBrailleSignage: true,
+      hasHighContrastSignage: true,
+      hasTactilePaving: true,
+      allowsGuideDogs: true,
+      hasQuietRoom: true,
+      hasLowLightingArea: true,
+      hasLowNoiseEnvironment: true,
+      hasSensoryFriendlySchedule: true,
+    },
+    overallScore: 100,
+    pillarScores: { mobility: 100, hearing: 100, vision: 100, sensory: 100 },
+    reviewsCount: 42,
+    averageRating: 5.0,
+    featured: true,
+  },
+  {
+    id: 'evt-005',
+    title: 'ماراثون الشرقية الرياضي الشامل 2026',
+    description: 'تظاهرة رياضية ومجتمعية مفتوحة لكافة الفئات والأعمار، تتضمن مسارات خاصة لسباقات الكراسي المتحركة ومسارات مجهزة بدليل مخصص للمكفوفين ومحطات إرشاد وإسعاف متكاملة.',
+    category: 'فعالية رياضية',
+    city: 'الدمام',
+    locationName: 'متنزه الواجهة البحرية، الدمام',
+    address: 'طريق الملك عبد الله بن عبد العزيز، الدمام',
+    eventDate: '2026-11-10',
+    startTime: '06:30 ص',
+    endTime: '11:00 ص',
+    price: '25 ريال',
+    imageUrl: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=1200&q=80',
+    facilityImages: [
+      'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=800&q=80'
+    ],
+    organizerId: 'org-05',
+    organizerName: 'الاتحاد السعودي للرياضة للجميع',
+    features: {
+      hasWheelchairAccess: true,
+      hasRamps: true,
+      hasAccessibleElevators: false,
+      hasAccessibleParking: true,
+      hasAccessibleRestrooms: true,
+      hasStepFreeRoute: true,
+      hasSignLanguageInterpreter: true,
+      hasLiveCaptions: false,
+      hasHearingLoop: false,
+      hasVisualAlerts: true,
+      hasAudioDescription: true,
+      hasBrailleSignage: false,
+      hasHighContrastSignage: true,
+      hasTactilePaving: false,
+      allowsGuideDogs: true,
+      hasQuietRoom: true,
+      hasLowLightingArea: false,
+      hasLowNoiseEnvironment: false,
+      hasSensoryFriendlySchedule: true,
+    },
+    overallScore: 78,
+    pillarScores: { mobility: 85, hearing: 50, vision: 65, sensory: 55 },
+    reviewsCount: 15,
+    averageRating: 4.5,
+    featured: false,
+  },
+  {
+    id: 'evt-006',
+    title: 'مهرجان الدرعية الثقافي للحرف والمأكولات التراثية',
+    description: 'احتفالية بالهوية النجدية والتراث الحرفي الحي، مع تهيئة ممرات تراثية مستوية خالية من المطبات، وعربات تنقل ميسرة ومترجمي لغة إشارة متواجدين في المحطات الإرشادية.',
+    category: 'مهرجان ثقافي',
+    city: 'الرياض',
+    locationName: 'مطل البجيري التراثي',
+    address: 'حي البجيري، الدرعية، الرياض',
+    eventDate: '2026-10-28',
+    startTime: '04:00 م',
+    endTime: '11:00 م',
+    price: '50 ريال',
+    imageUrl: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1200&q=80',
+    facilityImages: [
+      'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80'
+    ],
+    organizerId: 'org-06',
+    organizerName: 'هيئة تطوير بوابة الدرعية',
+    features: {
+      hasWheelchairAccess: true,
+      hasRamps: true,
+      hasAccessibleElevators: true,
+      hasAccessibleParking: true,
+      hasAccessibleRestrooms: true,
+      hasStepFreeRoute: true,
+      hasSignLanguageInterpreter: true,
+      hasLiveCaptions: false,
+      hasHearingLoop: false,
+      hasVisualAlerts: true,
+      hasAudioDescription: true,
+      hasBrailleSignage: true,
+      hasHighContrastSignage: true,
+      hasTactilePaving: true,
+      allowsGuideDogs: true,
+      hasQuietRoom: true,
+      hasLowLightingArea: false,
+      hasLowNoiseEnvironment: false,
+      hasSensoryFriendlySchedule: true,
+    },
+    overallScore: 85,
+    pillarScores: { mobility: 100, hearing: 50, vision: 100, sensory: 55 },
+    reviewsCount: 31,
+    averageRating: 4.8,
+    featured: false,
+  },
+  {
+    id: 'evt-007',
+    title: 'المنتدى الصحي للابتكار في الرعاية التأهيلية والمساندة',
+    description: 'مؤتمر طبي وأكاديمي يناقش أحدث التقنيات المساعدة والأطراف الذكية وحلول التأهيل الحركي والحسي، مقام في قاعات جامعية مجهزة بنظم تيسير متطورة وشاشات تفاعلية.',
+    category: 'ندوة علمية',
+    city: 'جدة',
+    locationName: 'مركز المؤتمرات بجامعة الملك عبد العزيز',
+    address: 'طريق عبد الله السليمان، جدة',
+    eventDate: '2026-11-03',
+    startTime: '08:30 ص',
+    endTime: '03:30 م',
+    price: 'مجاني للكوادر الصحية والطلاب',
+    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
+    facilityImages: [
+      'https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?auto=format&fit=crop&w=800&q=80'
+    ],
+    organizerId: 'org-07',
+    organizerName: 'الجمعية السعودية للعلاج الطبيعي والتأهيل',
+    features: {
+      hasWheelchairAccess: true,
+      hasRamps: true,
+      hasAccessibleElevators: true,
+      hasAccessibleParking: true,
+      hasAccessibleRestrooms: true,
+      hasStepFreeRoute: true,
+      hasSignLanguageInterpreter: true,
+      hasLiveCaptions: true,
+      hasHearingLoop: true,
+      hasVisualAlerts: true,
+      hasAudioDescription: true,
+      hasBrailleSignage: true,
+      hasHighContrastSignage: true,
+      hasTactilePaving: true,
+      allowsGuideDogs: true,
+      hasQuietRoom: true,
+      hasLowLightingArea: true,
+      hasLowNoiseEnvironment: true,
+      hasSensoryFriendlySchedule: true,
+    },
+    overallScore: 98,
+    pillarScores: { mobility: 100, hearing: 100, vision: 100, sensory: 100 },
+    reviewsCount: 27,
+    averageRating: 4.9,
+    featured: true,
+  },
+  {
+    id: 'evt-008',
+    title: 'سوق خيرات الحرفي السنوي للأسر والرياديين',
+    description: 'سوق مجتمعي خيري يعرض منتجات محلية وحرفية ومأكولات منزلية، مع تنظيم ساعات تسوق هادئة (Sensory Hours) خالية من الضجيج والمؤثرات، وتوفير كراسي متحركة للإعارة عند المداخل.',
+    category: 'سوق خيري',
+    city: 'الرياض',
+    locationName: 'مجمع واحة الرياض للتسوق المفتوح',
+    address: 'طريق الدائري الشمالي، الرياض',
+    eventDate: '2026-12-12',
+    startTime: '03:00 م',
+    endTime: '10:00 م',
+    price: 'الدخول مجاني',
+    imageUrl: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=1200&q=80',
+    facilityImages: [
+      'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80'
+    ],
+    organizerId: 'org-08',
+    organizerName: 'جمعية خيرات للتنمية المجتمعية',
+    features: {
+      hasWheelchairAccess: true,
+      hasRamps: true,
+      hasAccessibleElevators: true,
+      hasAccessibleParking: true,
+      hasAccessibleRestrooms: true,
+      hasStepFreeRoute: true,
+      hasSignLanguageInterpreter: false,
+      hasLiveCaptions: false,
+      hasHearingLoop: false,
+      hasVisualAlerts: true,
+      hasAudioDescription: false,
+      hasBrailleSignage: true,
+      hasHighContrastSignage: true,
+      hasTactilePaving: true,
+      allowsGuideDogs: true,
+      hasQuietRoom: true,
+      hasLowLightingArea: true,
+      hasLowNoiseEnvironment: true,
+      hasSensoryFriendlySchedule: true,
+    },
+    overallScore: 84,
+    pillarScores: { mobility: 100, hearing: 25, vision: 75, sensory: 100 },
+    reviewsCount: 18,
+    averageRating: 4.7,
+    featured: false,
+  }
+];
+const heroSlides = [
+  {
+    id: 1,
+    title: 'ونتر لاند وبوليفارد سيتي — موسم الرياض',
+    city: 'الرياض',
+    imageUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1920&q=80',
+  },
+  {
+    id: 2,
+    title: 'مركز الملك عبدالعزيز الثقافي العالمي (إثراء)',
+    city: 'الظهران',
+    imageUrl: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1920&q=80',
+  },
+  {
+    id: 3,
+    title: 'مطل البجيري وليالي الدرعية التراثية',
+    city: 'الدرعية',
+    imageUrl: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1920&q=80',
+  },
+  {
+    id: 4,
+    title: 'مؤتمر ليب العالمي للتقنيات والابتكار',
+    city: 'الرياض',
+    imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1920&q=80',
+  },
+  {
+    id: 5,
+    title: 'مهرجان نور الرياض للفنون والتجارب الضوئية',
+    city: 'الرياض',
+    imageUrl: 'https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1920&q=80',
+  }
+];
+
+function HomeView({ 
+  events, 
+  allEvents, 
+  userNeeds, 
+  setUserNeeds, 
+  getEventMatch, 
+  searchQuery, 
+  setSearchQuery, 
+  selectedCity, 
+  setSelectedCity, 
+  selectedCategory, 
+  setSelectedCategory,
+  savedEventIds,
+  toggleSaveEvent,
+  onSelectEvent,
+  onOpenDashboard,
+  onOpenAuth,
+  currentUser
+}) {
+  // Dynamic Background Slideshow State (Auto-rotates every 4.5 seconds)
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide(prev => (prev + 1) % heroSlides.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="space-y-12 pb-16">
+      {/* Hero Section with Dynamic Rotating Saudi Event Backgrounds */}
+      <section className="relative text-white pt-20 pb-28 overflow-hidden shadow-xl min-h-[580px] flex flex-col justify-between">
+        {/* Background Image Carousel with Cross-Fade */}
+        <div className="absolute inset-0 z-0">
+          {heroSlides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out bg-cover bg-center ${
+                index === activeSlide ? 'opacity-100 scale-105 transition-all duration-[6000ms]' : 'opacity-0'
+              }`}
+              style={{ backgroundImage: `url('${slide.imageUrl}')` }}
+            />
+          ))}
+          {/* High-End Dark Gradient Overlay for Maximum Readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/85 to-slate-950/80 backdrop-blur-[1px]" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6 flex-grow flex flex-col justify-center">
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/30 px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-sm mx-auto">
+            <span>المنصة الوطنية لسهولة الوصول والإتاحة الشاملة</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white max-w-4xl mx-auto leading-tight drop-shadow-md">
+            الفعالية للجميع
+          </h1>
+          
+          <p className="text-lg sm:text-xl text-slate-200 max-w-2xl mx-auto font-normal leading-relaxed">
+            اكتشف فعاليات تناسب احتياجاتك قبل أن تذهب.
+          </p>
+
+          <div className="flex items-center justify-center gap-3 text-xs sm:text-sm font-bold text-white">
+            <span className="bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-teal-300">اكتشف</span>
+            <span>•</span>
+            <span className="bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-rose-300">شارك</span>
+            <span>•</span>
+            <span className="bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-amber-300">استمتع</span>
+          </div>
+
+          {/* Search & Filter Bar */}
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl p-3 sm:p-4 shadow-2xl border border-slate-200 text-slate-900 mt-6 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+              <div className="md:col-span-5 relative">
+                <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Icons.Search className="w-5 h-5 text-slate-600" />
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="ابحث باسم الفعالية، المكان، أو الموضوع..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-3 pr-11 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-[#028090] focus:ring-2 focus:ring-teal-200 text-sm font-medium text-slate-900 transition"
+                />
+              </div>
+
+              <div className="md:col-span-3">
+                <select 
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  className="w-full px-3 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-[#028090] text-sm font-bold text-slate-800 transition"
+                >
+                  <option value="الكل">جميع المدن</option>
+                  <option value="الرياض">الرياض</option>
+                  <option value="جدة">جدة</option>
+                  <option value="مكة المكرمة">مكة المكرمة</option>
+                  <option value="المدينة المنورة">المدينة المنورة</option>
+                  <option value="الدمام">الدمام</option>
+                  <option value="الخبر">الخبر</option>
+                  <option value="أبها">أبها</option>
+                  <option value="تبوك">تبوك</option>
+                </select>
+              </div>
+
+              <div className="md:col-span-4">
+                <select 
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="w-full px-3 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-[#028090] text-sm font-bold text-slate-800 transition"
+                >
+                  <option value="الكل">جميع أنواع الفعاليات</option>
+                  <option value="مؤتمر تقني">مؤتمرات ومعارض</option>
+                  <option value="معرض فني">فنون وثقافة</option>
+                  <option value="حفل موسيقي">حفلات موسيقية</option>
+                  <option value="ورشة عمل">ورش عمل وتدريب</option>
+                  <option value="فعالية رياضية">فعاليات رياضية</option>
+                  <option value="ندوة علمية">ندوات طبية وعلمية</option>
+                  <option value="سوق خيري">أسواق مجتمعية</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Live Slideshow Location Indicator & Controls */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          {/* Current Saudi Location Badge */}
+          <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-slate-200">
+            <Icons.MapPin className="w-3.5 h-3.5 text-teal-400" />
+            <span className="font-bold">{heroSlides[activeSlide].title}</span>
+          </div>
+
+          {/* Slide Switcher Dots */}
+          <div className="flex items-center gap-2">
+            {heroSlides.map((slide, idx) => (
+              <button
+                key={slide.id}
+                onClick={() => setActiveSlide(idx)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  idx === activeSlide ? 'w-8 bg-teal-400' : 'w-2 bg-white/40 hover:bg-white/70'
+                }`}
+                title={slide.title}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Match Engine Quick Bar */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-14 relative z-20">
+        <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-200">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-slate-100 text-slate-800 rounded-lg">
+                  <Icons.Sliders className="w-5 h-5" />
+                </div>
+                <h2 className="text-lg font-black text-slate-900">
+                  محرك المطابقة الفورية (Personal Match Engine)
+                </h2>
+              </div>
+              <p className="text-xs text-slate-500 font-normal">
+                حدد متطلباتك وسيعيد النظام احتساب «نسبة مناسبة لك» لكل فعالية مباشرة وفقاً لمعايير الإتاحة.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={onOpenDashboard}
+                className="text-xs font-bold text-[#028090] bg-teal-50 hover:bg-teal-100 px-4 py-2.5 rounded-xl border border-teal-200 transition"
+              >
+                تخصيص احتياجاتي المتقدمة
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5">
+            <label className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition select-none ${userNeeds.wheelchair ? 'bg-teal-50 border-[#028090] text-[#028090] font-bold shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'}`}>
+              <input 
+                type="checkbox" 
+                checked={userNeeds.wheelchair}
+                onChange={(e) => setUserNeeds({ ...userNeeds, wheelchair: e.target.checked, ramps: e.target.checked, elevators: e.target.checked })}
+                className="sr-only"
+              />
+              <div className={`p-2 rounded-lg ${userNeeds.wheelchair ? 'bg-[#028090] text-white' : 'bg-white text-slate-400 border border-slate-200'}`}>
+                <Icons.Wheelchair className="w-4 h-4" />
+              </div>
+              <div className="text-right">
+                <span className="block text-xs font-bold">احتياج حركي</span>
+                <span className="block text-[10px] text-slate-500 font-normal">كراسي ومصاعد ومنحدرات</span>
+              </div>
+            </label>
+
+            <label className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition select-none ${userNeeds.signLang || userNeeds.captions ? 'bg-rose-50 border-[#F26440] text-[#F26440] font-bold shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'}`}>
+              <input 
+                type="checkbox" 
+                checked={userNeeds.signLang}
+                onChange={(e) => setUserNeeds({ ...userNeeds, signLang: e.target.checked, captions: e.target.checked })}
+                className="sr-only"
+              />
+              <div className={`p-2 rounded-lg ${userNeeds.signLang ? 'bg-[#F26440] text-white' : 'bg-white text-slate-400 border border-slate-200'}`}>
+                <Icons.Ear className="w-4 h-4" />
+              </div>
+              <div className="text-right">
+                <span className="block text-xs font-bold">احتياج سمعي</span>
+                <span className="block text-[10px] text-slate-500 font-normal">لغة إشارة وترجمة فورية</span>
+              </div>
+            </label>
+
+            <label className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition select-none ${userNeeds.contrast || userNeeds.audioDesc ? 'bg-slate-100 border-slate-800 text-slate-900 font-bold shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'}`}>
+              <input 
+                type="checkbox" 
+                checked={userNeeds.contrast}
+                onChange={(e) => setUserNeeds({ ...userNeeds, contrast: e.target.checked, audioDesc: e.target.checked, braille: e.target.checked })}
+                className="sr-only"
+              />
+              <div className={`p-2 rounded-lg ${userNeeds.contrast ? 'bg-slate-900 text-white' : 'bg-white text-slate-400 border border-slate-200'}`}>
+                <Icons.Eye className="w-4 h-4" />
+              </div>
+              <div className="text-right">
+                <span className="block text-xs font-bold">احتياج بصري</span>
+                <span className="block text-[10px] text-slate-500 font-normal">وصف صوتي وبرايل وتباين</span>
+              </div>
+            </label>
+
+            <label className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition select-none ${userNeeds.quietRoom ? 'bg-amber-50 border-[#EAA812] text-[#EAA812] font-bold shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'}`}>
+              <input 
+                type="checkbox" 
+                checked={userNeeds.quietRoom}
+                onChange={(e) => setUserNeeds({ ...userNeeds, quietRoom: e.target.checked, lowNoise: e.target.checked })}
+                className="sr-only"
+              />
+              <div className={`p-2 rounded-lg ${userNeeds.quietRoom ? 'bg-[#EAA812] text-white' : 'bg-white text-slate-400 border border-slate-200'}`}>
+                <Icons.Brain className="w-4 h-4" />
+              </div>
+              <div className="text-right">
+                <span className="block text-xs font-bold">احتياج حسي</span>
+                <span className="block text-[10px] text-slate-500 font-normal">غرفة هادئة وبيئة مريحة</span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      {/* Recommended Events */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-black text-slate-900">
+              فعاليات مقترحة لك
+            </h2>
+            <p className="text-sm text-slate-500 mt-1 font-normal">
+              مرتبة حسب أعلى نسبة ملاءمة لاحتياجاتك الشخصية المحددة
+            </p>
+          </div>
+
+          <span className="text-xs font-bold bg-slate-100 text-slate-800 px-3.5 py-1.5 rounded-full border border-slate-300">
+            {events.length} فعالية متاحة
+          </span>
+        </div>
+
+        {events.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 p-8">
+            <Icons.AlertTriangle className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-slate-800">لا توجد فعاليات مطابقة لبحثك</h3>
+            <p className="text-sm text-slate-500 mt-1 font-normal">جرب تغيير المدينة أو مسح كلمات البحث للاطلاع على كافة الفعاليات.</p>
+            <button 
+              onClick={() => { setSearchQuery(''); setSelectedCity('الكل'); setSelectedCategory('الكل'); }}
+              className="mt-4 px-4 py-2 bg-[#028090] text-white rounded-xl text-xs font-bold hover:bg-teal-800 transition"
+            >
+              إعادة ضبط الفلاتر
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events.map(event => (
+              <EventCard 
+                key={event.id}
+                event={event}
+                match={getEventMatch(event)}
+                isSaved={savedEventIds.includes(event.id)}
+                onToggleSave={() => toggleSaveEvent(event.id)}
+                onSelect={() => onSelectEvent(event.id)}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Why Ma'ak Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div 
+          className="rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden bg-cover bg-center"
+          style={{ 
+            backgroundImage: "linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.94)), url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1920&q=80')" 
+          }}
+        >
+          <div className="max-w-3xl space-y-4 relative z-10">
+            <span className="text-xs font-bold uppercase tracking-wider text-teal-300 bg-teal-950/60 border border-teal-500/40 px-3 py-1 rounded-full">
+              رؤية الوصول الشامل
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-black">
+              تجربة وصول موثوقة ومبنية على الشفافية والذكاء الاصطناعي
+            </h3>
+            <p className="text-slate-300 text-sm leading-relaxed font-normal">
+              نحن نسد الفجوة بين المنظمين والزوار من ذوي الإعاقة. لا مزيد من المفاجآت أو العوائق غير المتوقعة في المداخل. اعرف جاهزية المكان، تواصل مع المساعد الذكي، وشارك بثقة واطمئنان.
+            </p>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 text-center">
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-2xl">
+                <span className="block text-2xl font-black text-teal-300">100%</span>
+                <span className="text-xs text-slate-300 mt-1 block font-medium">شفافية في تفاصيل الوصول</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-2xl">
+                <span className="block text-2xl font-black text-rose-300">4</span>
+                <span className="text-xs text-slate-300 mt-1 block font-medium">محاور إتاحة شاملة</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-2xl">
+                <span className="block text-2xl font-black text-amber-300">فوري</span>
+                <span className="text-xs text-slate-300 mt-1 block font-medium">محرك مطابقة شخصي</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-2xl">
+                <span className="block text-2xl font-black text-emerald-300">دقة</span>
+                <span className="text-xs text-slate-300 mt-1 block font-medium">فحص صور المداخل والمرافق</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function EventCard({ event, match, isSaved, onToggleSave, onSelect }) {
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col group">
+      <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+        <img 
+          src={event.imageUrl} 
+          alt={event.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+
+        <div className="absolute top-3 right-3 flex items-center gap-2">
+          <span className="bg-slate-900/90 text-white text-xs px-2.5 py-1 rounded-full font-bold shadow-sm">
+            {event.city}
+          </span>
+          <span className="bg-white/95 text-slate-800 text-xs px-2.5 py-1 rounded-full font-bold shadow-sm">
+            {event.category}
+          </span>
+        </div>
+
+        <button 
+          onClick={(e) => { e.stopPropagation(); onToggleSave(); }}
+          className="absolute top-3 left-3 p-2 rounded-full bg-white/90 hover:bg-white text-slate-700 hover:text-[#F26440] transition shadow-sm"
+          title={isSaved ? "إلغاء الحفظ" : "حفظ في المفضلة"}
+        >
+          <Icons.Bookmark className={`w-4 h-4 ${isSaved ? 'text-[#F26440] fill-[#F26440]' : ''}`} filled={isSaved} />
+        </button>
+
+        <div className="absolute bottom-3 right-3 left-3 flex items-center justify-between text-white">
+          <div className="bg-slate-900/90 backdrop-blur-sm px-3 py-1 rounded-lg border border-white/20 flex items-center gap-1.5">
+            <span className="text-[11px] text-slate-300">مناسبة لك:</span>
+            <span className={`text-xs font-bold ${match.percentage >= 80 ? 'text-emerald-400' : match.percentage >= 60 ? 'text-amber-400' : 'text-rose-400'}`}>
+              {match.percentage}%
+            </span>
+          </div>
+
+          <div className="bg-slate-900/90 backdrop-blur-sm px-3 py-1 rounded-lg border border-white/20 flex items-center gap-1">
+            <span className="text-[11px] text-slate-300">درجة الوصول:</span>
+            <span className="text-xs font-bold text-teal-300">{event.overallScore}/100</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+        <div className="space-y-2">
+          <h3 
+            onClick={onSelect}
+            className="font-black text-base text-slate-900 hover:text-[#028090] transition cursor-pointer line-clamp-1"
+          >
+            {event.title}
+          </h3>
+          
+          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed font-normal">
+            {event.description}
+          </p>
+
+          <div className="space-y-1 pt-1 text-xs text-slate-700">
+            <div className="flex items-center gap-2">
+              <Icons.Calendar className="w-3.5 h-3.5 text-slate-500" />
+              <span className="font-medium">{event.eventDate} • {event.startTime}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Icons.MapPin className="w-3.5 h-3.5 text-[#F26440]" />
+              <span className="truncate font-medium">{event.locationName}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-slate-100 pt-3">
+          <div className="text-[11px] text-slate-500 mb-2 font-bold">التجهيزات المتوفرة بالموقع:</div>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {event.features.hasWheelchairAccess && (
+              <span className="flex items-center gap-1 bg-teal-50 text-[#028090] border border-teal-200 px-2 py-0.5 rounded-md text-[10px] font-bold">
+                <Icons.Wheelchair className="w-3 h-3" />
+                حركي
+              </span>
+            )}
+            {event.features.hasSignLanguageInterpreter && (
+              <span className="flex items-center gap-1 bg-emerald-50 text-[#2E8B57] border border-emerald-200 px-2 py-0.5 rounded-md text-[10px] font-bold">
+                <Icons.HandSign className="w-3 h-3" />
+                لغة إشارة
+              </span>
+            )}
+            {event.features.hasLiveCaptions && (
+              <span className="flex items-center gap-1 bg-rose-50 text-[#F26440] border border-rose-200 px-2 py-0.5 rounded-md text-[10px] font-bold">
+                <Icons.Ear className="w-3 h-3" />
+                ترجمة فورية
+              </span>
+            )}
+            {event.features.hasAudioDescription && (
+              <span className="flex items-center gap-1 bg-slate-100 text-slate-800 border border-slate-300 px-2 py-0.5 rounded-md text-[10px] font-bold">
+                <Icons.Eye className="w-3 h-3" />
+                وصف صوتي
+              </span>
+            )}
+            {event.features.hasQuietRoom && (
+              <span className="flex items-center gap-1 bg-amber-50 text-[#EAA812] border border-amber-200 px-2 py-0.5 rounded-md text-[10px] font-bold">
+                <Icons.Brain className="w-3 h-3" />
+                غرفة هادئة
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="pt-2">
+          <button 
+            onClick={onSelect}
+            className="w-full bg-[#0F172A] hover:bg-[#028090] text-white text-xs font-bold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 shadow-sm"
+          >
+            <span>عرض التفاصيل والمسار الميسر</span>
+            <Icons.ArrowLeft className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+function EventDetailsView({ event, userNeeds, getEventMatch, savedEventIds, toggleSaveEvent, onBack }) {
+  const match = getEventMatch(event);
+  const isSaved = savedEventIds.includes(event.id);
+
+  const [chatMessages, setChatMessages] = useState([
+    { 
+      sender: 'assistant', 
+      text: `مرحباً بك في صفحة «${event.title}». أنا المساعد الذكي لإمكانية الوصول لمنصة «مَعَك». كيف يمكنني مساعدتك بخصوص تجهيزات المكان ومسارات الدخول؟` 
+    }
+  ]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isSending, setIsSending] = useState(false);
+
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
+  const [reportCategory, setReportCategory] = useState('حركي');
+  const [reportText, setReportText] = useState('');
+
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewSuccess, setReviewSuccess] = useState(false);
+  const [mobilityRating, setMobilityRating] = useState(5);
+  const [hearingRating, setHearingRating] = useState(5);
+  const [visionRating, setVisionRating] = useState(5);
+  const [sensoryRating, setSensoryRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+
+  const handleSendMessage = (e) => {
+    e?.preventDefault();
+    if (!inputMessage.trim()) return;
+
+    const userMsg = inputMessage.trim();
+    setChatMessages(prev => [...prev, { sender: 'user', text: userMsg }]);
+    setInputMessage('');
+    setIsSending(true);
+
+    setTimeout(() => {
+      let responseText = '';
+      const lower = userMsg.toLowerCase();
+      if (lower.includes('كرسي') || lower.includes('حركي') || lower.includes('منحدر') || lower.includes('مصعد') || lower.includes('موقف')) {
+        responseText = `نعم، فعالية «${event.title}» في ${event.locationName} مهيأة بالكامل لمستخدمي الكراسي المتحركة. تتوفر منحدرات قياسية ومصاعد واسعة ومواقف خاصة مهيأة بجوار المدخل الرئيسي.`;
+      } else if (lower.includes('إشارة') || lower.includes('صم') || lower.includes('سمعي') || lower.includes('ترجمة')) {
+        responseText = event.features.hasSignLanguageInterpreter 
+          ? `يتوفر مترجم لغة إشارة معتمد للجلسات الرئيسية، بالإضافة إلى شاشات ترجمة نصية فورية مباشرة.`
+          : `تشير البيانات الحالية إلى عدم وجود مترجم لغة إشارة مخصص، ولكن تتوفر شاشات بصرية وإرشادات واضحة.`;
+      } else if (lower.includes('بصري') || lower.includes('برايل') || lower.includes('وصف صوتي') || lower.includes('مكفوف')) {
+        responseText = event.features.hasAudioDescription
+          ? `تتوفر خدمة الوصف الصوتي المباشر عبر سماعات خاصة، كما توجد لوحات إرشادية بطريقة برايل وتباين لوني عالٍ.`
+          : `تعتمد اللوحات الإرشادية في الموقع على تباين لوني واضح وأحجام خطوط كبيرة لتسهيل القراءة.`;
+      } else if (lower.includes('حسي') || lower.includes('هدوء') || lower.includes('إضاءة') || lower.includes('زحمة')) {
+        responseText = event.features.hasQuietRoom
+          ? `نعم، تم تخصيص غرفة استراحة هادئة مجهزة بإضاءة خافتة للاسترخاء وإعادة شحن الطاقة بعيداً عن صخب الفعالية.`
+          : `لا توجد غرفة حسية منفصلة معلنة، لكن تتوفر مساحات مفتوحة ملائمة للاستراحة.`;
+      } else {
+        responseText = `تبلغ درجة إمكانية الوصول الكلية لهذه الفعالية ${event.overallScore} من 100، ونسبة مناسبتها لاحتياجاتك المسجلة هي ${match.percentage}%. يمكنك سؤالي عن أي مرفق محدد لتأكيد جاهزيته.`;
+      }
+
+      setChatMessages(prev => [...prev, { sender: 'assistant', text: responseText }]);
+      setIsSending(false);
+    }, 600);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      {/* Breadcrumb Bar */}
+      <div className="flex items-center justify-between">
+        <button 
+          onClick={onBack}
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-[#028090] transition bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm"
+        >
+          <Icons.ArrowRight className="w-4 h-4" />
+          <span>العودة للرئيسية والفعاليات</span>
+        </button>
+
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => toggleSaveEvent(event.id)}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold border transition ${isSaved ? 'bg-rose-50 text-[#F26440] border-rose-200' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
+          >
+            <Icons.Bookmark className="w-4 h-4" filled={isSaved} />
+            <span>{isSaved ? 'محفوظة في المفضلة' : 'حفظ الفعالية'}</span>
+          </button>
+
+          <button 
+            onClick={() => setShowReportModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:text-[#F26440] hover:border-[#F26440] transition"
+          >
+            <Icons.AlertTriangle className="w-4 h-4" />
+            <span>الإبلاغ عن عائق</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Main Hero Header Card */}
+      <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-md">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          <div className="lg:col-span-5 h-72 lg:h-auto relative bg-slate-100">
+            <img 
+              src={event.imageUrl} 
+              alt={event.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute top-4 right-4 bg-slate-900/90 text-white text-xs px-3 py-1 rounded-full font-bold shadow-sm">
+              {event.city} • {event.category}
+            </div>
+          </div>
+
+          <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#028090]">
+                <Icons.Building className="w-4 h-4" />
+                <span>تنظيم: {event.organizerName}</span>
+              </div>
+
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">
+                {event.title}
+              </h1>
+
+              <p className="text-sm text-slate-600 leading-relaxed font-normal">
+                {event.description}
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-slate-700">
+                <div className="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                  <Icons.Calendar className="w-4 h-4 text-slate-600" />
+                  <span className="font-medium">{event.eventDate} ({event.startTime} - {event.endTime})</span>
+                </div>
+                <div className="flex items-center gap-2 bg-rose-50 p-2.5 rounded-xl border border-rose-200">
+                  <Icons.MapPin className="w-4 h-4 text-[#F26440]" />
+                  <span className="truncate font-medium">{event.locationName}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+              <div className="bg-gradient-to-br from-teal-50 to-emerald-50 p-4 rounded-2xl border border-teal-200">
+                <span className="text-xs text-[#028090] font-bold block">نسبة مناسبتها لك:</span>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-3xl font-bold text-teal-900">{match.percentage}%</span>
+                  <span className="text-xs text-teal-700 font-medium">تطابق مع احتياجاتك المحددة</span>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <span className="text-xs text-slate-700 font-bold block">درجة إمكانية الوصول الكلية:</span>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-3xl font-bold text-slate-900">{event.overallScore}</span>
+                  <span className="text-xs text-slate-500 font-medium">من 100 في المؤشر الشامل</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 4 Pillars Breakdown & Full Checklist Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8 space-y-8">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <Icons.Layers className="w-5 h-5 text-[#028090]" />
+              <span>توزيع درجات الإتاحة على المحاور الأربعة</span>
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-teal-50/70 border border-teal-200 p-4 rounded-2xl space-y-2">
+                <div className="flex items-center justify-between text-sm font-bold text-teal-950">
+                  <div className="flex items-center gap-2">
+                    <Icons.Wheelchair className="w-4 h-4 text-[#028090]" />
+                    <span>المحور الحركي</span>
+                  </div>
+                  <span>{event.pillarScores.mobility}%</span>
+                </div>
+                <div className="w-full bg-teal-200/80 h-2.5 rounded-full overflow-hidden">
+                  <div className="bg-[#028090] h-full rounded-full transition-all duration-500" style={{ width: `${event.pillarScores.mobility}%` }}></div>
+                </div>
+                <span className="text-[11px] text-teal-700 block">كراسي متحركة، منحدرات، مصاعد، مواقف</span>
+              </div>
+
+              <div className="bg-rose-50/70 border border-rose-200 p-4 rounded-2xl space-y-2">
+                <div className="flex items-center justify-between text-sm font-bold text-rose-950">
+                  <div className="flex items-center gap-2">
+                    <Icons.Ear className="w-4 h-4 text-[#F26440]" />
+                    <span>المحور السمعي</span>
+                  </div>
+                  <span>{event.pillarScores.hearing}%</span>
+                </div>
+                <div className="w-full bg-rose-200/80 h-2.5 rounded-full overflow-hidden">
+                  <div className="bg-[#F26440] h-full rounded-full transition-all duration-500" style={{ width: `${event.pillarScores.hearing}%` }}></div>
+                </div>
+                <span className="text-[11px] text-rose-700 block">لغة إشارة، ترجمة نصية فورية، سماعات مساعدة</span>
+              </div>
+
+              <div className="bg-slate-100 border border-slate-300 p-4 rounded-2xl space-y-2">
+                <div className="flex items-center justify-between text-sm font-bold text-slate-900">
+                  <div className="flex items-center gap-2">
+                    <Icons.Eye className="w-4 h-4 text-slate-700" />
+                    <span>المحور البصري</span>
+                  </div>
+                  <span>{event.pillarScores.vision}%</span>
+                </div>
+                <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                  <div className="bg-slate-800 h-full rounded-full transition-all duration-500" style={{ width: `${event.pillarScores.vision}%` }}></div>
+                </div>
+                <span className="text-[11px] text-slate-600 block">وصف صوتي، لوحات برايل، تباين لوني عالٍ</span>
+              </div>
+
+              <div className="bg-amber-50/70 border border-amber-200 p-4 rounded-2xl space-y-2">
+                <div className="flex items-center justify-between text-sm font-bold text-amber-950">
+                  <div className="flex items-center gap-2">
+                    <Icons.Brain className="w-4 h-4 text-[#EAA812]" />
+                    <span>المحور الحسي</span>
+                  </div>
+                  <span>{event.pillarScores.sensory}%</span>
+                </div>
+                <div className="w-full bg-amber-200/80 h-2.5 rounded-full overflow-hidden">
+                  <div className="bg-[#EAA812] h-full rounded-full transition-all duration-500" style={{ width: `${event.pillarScores.sensory}%` }}></div>
+                </div>
+                <span className="text-[11px] text-amber-700 block">غرفة هادئة، إضاءة مريحة، ضوضاء منخفضة</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Complete Facilities Checklist */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+            <h2 className="text-xl font-bold text-slate-900">
+              قائمة تجهيزات إمكانية الوصول المفصلة
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <ChecklistItem label="مسار مخصص للكراسي المتحركة" available={event.features.hasWheelchairAccess} icon={Icons.Wheelchair} />
+              <ChecklistItem label="منحدرات قياسية عند المداخل" available={event.features.hasRamps} icon={Icons.Wheelchair} />
+              <ChecklistItem label="مصاعد ميسرة وواسعة" available={event.features.hasAccessibleElevators} icon={Icons.Building} />
+              <ChecklistItem label="مواقف سيارات مخصصة ومهيأة" available={event.features.hasAccessibleParking} icon={Icons.MapPin} />
+              <ChecklistItem label="دورات مياه مهيأة ومجهزة" available={event.features.hasAccessibleRestrooms} icon={Icons.ShieldCheck} />
+              <ChecklistItem label="مسار منبسط خالٍ من السلالم والعوائق" available={event.features.hasStepFreeRoute} icon={Icons.Check} />
+
+              <ChecklistItem label="مترجم لغة إشارة معتمد" available={event.features.hasSignLanguageInterpreter} icon={Icons.HandSign} />
+              <ChecklistItem label="ترجمة نصية فورية مباشرة (Captions)" available={event.features.hasLiveCaptions} icon={Icons.Ear} />
+              <ChecklistItem label="أجهزة وسماعات تضخيم سمعي" available={event.features.hasHearingLoop} icon={Icons.Ear} />
+              <ChecklistItem label="لوحات وشاشات تنبيه بصرية" available={event.features.hasVisualAlerts} icon={Icons.Eye} />
+
+              <ChecklistItem label="خدمة الوصف الصوتي المباشر" available={event.features.hasAudioDescription} icon={Icons.Eye} />
+              <ChecklistItem label="لوحات إرشادية بطريقة برايل" available={event.features.hasBrailleSignage} icon={Icons.Eye} />
+              <ChecklistItem label="لوحات تباين بصري عالٍ" available={event.features.hasHighContrastSignage} icon={Icons.Eye} />
+              <ChecklistItem label="مسارات أرضية لمسية (Tactile Paving)" available={event.features.hasTactilePaving} icon={Icons.Eye} />
+              <ChecklistItem label="السماح بالكلاب المرشدة للمكفوفين" available={event.features.allowsGuideDogs} icon={Icons.ShieldCheck} />
+
+              <ChecklistItem label="غرفة أو ركن استراحة هادئ" available={event.features.hasQuietRoom} icon={Icons.Brain} />
+              <ChecklistItem label="منطقة إضاءة خافتة ومريحة" available={event.features.hasLowLightingArea} icon={Icons.Brain} />
+              <ChecklistItem label="بيئة منخفضة الضوضاء" available={event.features.hasLowNoiseEnvironment} icon={Icons.Brain} />
+              <ChecklistItem label="ساعات مخصصة للزيارة الهادئة" available={event.features.hasSensoryFriendlySchedule} icon={Icons.Clock} />
+            </div>
+          </div>
+
+          {/* Facility Photos Gallery */}
+          {event.facilityImages && event.facilityImages.length > 0 && (
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+              <h2 className="text-xl font-bold text-slate-900">
+                صور المداخل والمرافق الميسرة بالموقع
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {event.facilityImages.map((img, idx) => (
+                  <div key={idx} className="rounded-2xl overflow-hidden h-40 bg-slate-100 border border-slate-200">
+                    <img src={img} alt={`مرفق ${idx + 1}`} className="w-full h-full object-cover hover:scale-105 transition duration-300" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Reviews Section */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">
+                  تقييمات الزوار لإمكانية الوصول
+                </h2>
+                <p className="text-xs text-slate-500 mt-1">تجارب حقيقية من زوار حضروا الفعالية</p>
+              </div>
+
+              <button 
+                onClick={() => setShowReviewModal(true)}
+                className="px-4 py-2 rounded-xl bg-[#0F172A] text-white text-xs font-bold hover:bg-[#028090] transition shadow-sm"
+              >
+                إضافة تقييمك بعد الحضور
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-slate-900">عبدالله السبيعي</span>
+                  <span className="text-slate-400">10 أغسطس 2026</span>
+                </div>
+                <div className="flex items-center gap-1 text-[#EAA812]">
+                  <span className="font-bold text-amber-600">5 / 5 (ممتاز)</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  التنظيم كان مبهراً والمنحدرات ممهدة تماماً للكراسي المتحركة، كما وفروا أجهزة ترجمة فورية ولغة إشارة على المنصة الرئيسية بلا أي تأخير.
+                </p>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-slate-900">نورة المنصور</span>
+                  <span className="text-slate-400">12 أغسطس 2026</span>
+                </div>
+                <div className="flex items-center gap-1 text-[#EAA812]">
+                  <span className="font-bold text-amber-600">5 / 5 (ممتاز)</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  الغرفة الهادئة المخصصة للاستراحة وفرت بيئة مثالية لإعادة التركيز، واللوحات الإرشادية كانت واضحة جداً ومرتفعة.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side AI Assistant Widget */}
+        <div className="lg:col-span-4 space-y-6">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden flex flex-col h-[520px]">
+            <div className="bg-slate-900 p-4 text-white flex items-center justify-between shadow-sm">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 bg-[#028090] text-white rounded-xl shadow-sm">
+                  <Icons.MessageSquare className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm">المساعد الذكي للفعالية</h3>
+                  <span className="text-[10px] text-teal-300 block">يجيب بناءً على بيانات الفعالية فقط</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-grow p-4 overflow-y-auto space-y-3 bg-slate-50 text-xs">
+              {chatMessages.map((msg, idx) => (
+                <div 
+                  key={idx}
+                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`max-w-[85%] p-3 rounded-2xl leading-relaxed ${msg.sender === 'user' ? 'bg-slate-900 text-white rounded-br-none shadow-sm' : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none shadow-sm'}`}>
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+              {isSending && (
+                <div className="flex justify-start">
+                  <div className="bg-white p-3 rounded-2xl text-slate-500 border border-slate-200 text-xs animate-pulse">
+                    جاري فحص بيانات الوصول...
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <form onSubmit={handleSendMessage} className="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
+              <input 
+                type="text"
+                placeholder="اسأل عن المنحدرات، لغة الإشارة، الغرفة الهادئة..."
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                className="flex-grow text-xs px-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 text-slate-900 font-medium"
+              />
+              <button 
+                type="submit"
+                disabled={isSending || !inputMessage.trim()}
+                className="p-2.5 bg-[#028090] hover:bg-teal-700 text-white rounded-xl transition disabled:opacity-50 shadow-sm"
+              >
+                <Icons.Send className="w-4 h-4" />
+              </button>
+            </form>
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+              <Icons.MapPin className="w-4 h-4 text-[#F26440]" />
+              <span>الموقع والمسار الميسر</span>
+            </h3>
+            
+            <p className="text-xs text-slate-600 leading-relaxed font-normal">
+              {event.address}
+            </p>
+
+            <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 text-xs text-slate-700">
+              <div className="font-bold text-slate-900">إرشادات الوصول الميداني:</div>
+              <ul className="space-y-1.5 list-disc list-inside text-slate-600 font-normal">
+                <li>المواقف المخصصة متاحة بجوار البوابة رقم 2.</li>
+                <li>المنحدر الرئيسي ممهد وعريض ومضاء ليلاً.</li>
+                <li>المصاعد متوفرة مباشرة عند بهو الاستقبال.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal: Report Issue */}
+      {showReportModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 relative shadow-2xl border border-slate-200">
+            <button 
+              onClick={() => { setShowReportModal(false); setReportSuccess(false); }}
+              className="absolute top-5 left-5 text-slate-400 hover:text-slate-600"
+            >
+              <Icons.X className="w-5 h-5" />
+            </button>
+
+            <div className="space-y-1">
+              <h3 className="text-lg font-bold text-slate-900">الإبلاغ عن مشكلة في إمكانية الوصول</h3>
+              <p className="text-xs text-slate-500">ساعدنا في الحفاظ على دقة المعلومات وتنبيه المنظمين فوراً.</p>
+            </div>
+
+            {reportSuccess ? (
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-2xl text-xs space-y-2 text-center">
+                <Icons.Check className="w-8 h-8 text-[#2E8B57] mx-auto" />
+                <p className="font-bold">تم إرسال بلاغك بنجاح</p>
+                <p>شكراً لتعاونك. سيقوم فريق التدقيق والمنظم بمراجعة البلاغ وتحديث حالة الفعالية.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">نوع العائق أو المشكلة</label>
+                  <select 
+                    value={reportCategory}
+                    onChange={(e) => setReportCategory(e.target.value)}
+                    className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white text-slate-900 font-bold"
+                  >
+                    <option value="حركي">عائق حركي (منحدر غير مطابق / مصعد معطل / سلالم مفاجئة)</option>
+                    <option value="سمعي">عائق سمعي (غياب الترجمة أو لغة الإشارة المعلنة)</option>
+                    <option value="بصري">عائق بصري (غياب الوصف الصوتي / لوحات برايل غير واضحة)</option>
+                    <option value="حسي">عائق حسي (عدم توفر الغرفة الهادئة المعلنة / ضجيج مفرط)</option>
+                    <option value="معلومات غير دقيقة">معلومات إتاحة غير مطابقة للواقع</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">وصف العائق بالتفصيل</label>
+                  <textarea 
+                    rows={3}
+                    placeholder="يرجى توضيح مكان العائق وما واجهته بدقة..."
+                    value={reportText}
+                    onChange={(e) => setReportText(e.target.value)}
+                    className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:border-slate-900 text-slate-900 font-medium"
+                  />
+                </div>
+
+                <button 
+                  onClick={() => setReportSuccess(true)}
+                  className="w-full bg-[#F26440] hover:bg-rose-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-md"
+                >
+                  إرسال البلاغ للتحقق
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Add Review */}
+      {showReviewModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 relative shadow-2xl border border-slate-200">
+            <button 
+              onClick={() => { setShowReviewModal(false); setReviewSuccess(false); }}
+              className="absolute top-5 left-5 text-slate-400 hover:text-slate-600"
+            >
+              <Icons.X className="w-5 h-5" />
+            </button>
+
+            <div className="space-y-1">
+              <h3 className="text-lg font-bold text-slate-900">تقييم إمكانية الوصول بعد الحضور</h3>
+              <p className="text-xs text-slate-500">تقييمك يسهم في توجيه الزوار الآخرين وتحفيز المنظمين.</p>
+            </div>
+
+            {reviewSuccess ? (
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-2xl text-xs space-y-2 text-center">
+                <Icons.Check className="w-8 h-8 text-[#2E8B57] mx-auto" />
+                <p className="font-bold">شكراً لتقييمك القيم!</p>
+                <p>تم حفظ تقييمك وسينعكس مباشرة في المنصة.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <span className="block font-bold text-slate-700 mb-1">الوصول الحركي:</span>
+                    <select 
+                      value={mobilityRating} 
+                      onChange={(e) => setMobilityRating(Number(e.target.value))}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold"
+                    >
+                      <option value={5}>5 من 5 (مهيأ تماماً)</option>
+                      <option value={4}>4 من 5 (جيد جداً)</option>
+                      <option value={3}>3 من 5 (متوسط)</option>
+                      <option value={2}>2 من 5 (ضعيف)</option>
+                      <option value={1}>1 من 5 (غير مهيأ)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className="block font-bold text-slate-700 mb-1">الدعم السمعي:</span>
+                    <select 
+                      value={hearingRating} 
+                      onChange={(e) => setHearingRating(Number(e.target.value))}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold"
+                    >
+                      <option value={5}>5 من 5 (متكامل)</option>
+                      <option value={4}>4 من 5 (جيد)</option>
+                      <option value={3}>3 من 5 (جزئي)</option>
+                      <option value={2}>2 من 5 (محدود)</option>
+                      <option value={1}>1 من 5 (غير متوفر)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className="block font-bold text-slate-700 mb-1">الدعم البصري:</span>
+                    <select 
+                      value={visionRating} 
+                      onChange={(e) => setVisionRating(Number(e.target.value))}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold"
+                    >
+                      <option value={5}>5 من 5 (ممتاز)</option>
+                      <option value={4}>4 من 5 (جيد)</option>
+                      <option value={3}>3 من 5 (متوسط)</option>
+                      <option value={2}>2 من 5 (ضعيف)</option>
+                      <option value={1}>1 من 5 (غير متوفر)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className="block font-bold text-slate-700 mb-1">الراحة الحسية:</span>
+                    <select 
+                      value={sensoryRating} 
+                      onChange={(e) => setSensoryRating(Number(e.target.value))}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold"
+                    >
+                      <option value={5}>5 من 5 (مثالي وهادئ)</option>
+                      <option value={4}>4 من 5 (مريح)</option>
+                      <option value={3}>3 من 5 (مقبول)</option>
+                      <option value={2}>2 من 5 (مزدحم ومزعج)</option>
+                      <option value={1}>1 من 5 (غير ملائم)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">ملاحظاتك الواقعية عن التجربة</label>
+                  <textarea 
+                    rows={3}
+                    placeholder="شاركنا تفاصيل تجربتك عند المداخل والمصاعد والخدمات المتاحة..."
+                    value={reviewComment}
+                    onChange={(e) => setReviewComment(e.target.value)}
+                    className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:border-slate-900 text-slate-900 font-medium"
+                  />
+                </div>
+
+                <button 
+                  onClick={() => setReviewSuccess(true)}
+                  className="w-full bg-[#0F172A] hover:bg-[#028090] text-white font-bold py-3 rounded-xl text-xs transition shadow-md"
+                >
+                  نشر التقييم في المنصة
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChecklistItem({ label, available, icon: IconComponent }) {
+  return (
+    <div className={`flex items-center justify-between p-3.5 rounded-2xl border transition ${available ? 'bg-emerald-50/60 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
+      <div className="flex items-center gap-2.5 text-xs font-bold">
+        <div className={`p-1.5 rounded-lg ${available ? 'bg-emerald-100 text-[#2E8B57]' : 'bg-slate-200 text-slate-400'}`}>
+          <IconComponent className="w-4 h-4" />
+        </div>
+        <span className={available ? 'text-slate-900' : 'text-slate-500'}>{label}</span>
+      </div>
+
+      <div className="flex items-center gap-1 text-[11px] font-bold">
+        {available ? (
+          <span className="flex items-center gap-1 text-[#2E8B57] bg-emerald-100/90 px-2 py-0.5 rounded-md">
+            <Icons.Check className="w-3.5 h-3.5 stroke-[3]" />
+            متوفر
+          </span>
+        ) : (
+          <span className="flex items-center gap-1 text-slate-400 bg-slate-200/70 px-2 py-0.5 rounded-md">
+            <Icons.X className="w-3.5 h-3.5" />
+            غير متوفر
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+function UserDashboardView({ 
+  currentUser, 
+  setCurrentUser, 
+  onOpenAuth, 
+  onLogout, 
+  userNeeds, 
+  setUserNeeds, 
+  eventsList, 
+  savedEventIds, 
+  toggleSaveEvent, 
+  getEventMatch, 
+  onSelectEvent 
+}) {
+  const [tab, setTab] = useState('needs');
+  const [savedAlert, setSavedAlert] = useState(false);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editName, setEditName] = useState(currentUser.name || 'زائر');
+  const [editEmail, setEditEmail] = useState(currentUser.email || 'user@example.com');
+  const [editPhone, setEditPhone] = useState(currentUser.phone || '');
+
+  const handleSaveNeeds = () => {
+    setSavedAlert(true);
+    setTimeout(() => setSavedAlert(false), 3000);
+  };
+
+  const handleSaveProfile = (e) => {
+    e.preventDefault();
+    setCurrentUser({
+      ...currentUser,
+      name: editName.trim() || 'زائر',
+      email: editEmail.trim() || 'user@example.com',
+      phone: editPhone.trim(),
+    });
+    setIsEditingProfile(false);
+  };
+
+  const savedEvents = eventsList.filter(e => savedEventIds.includes(e.id));
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      {/* Header Profile Box with Twitter-style plain user silhouette */}
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center shadow-inner overflow-hidden">
+            <Icons.UserAvatarSilhouette className="w-10 h-10 text-slate-400" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-[#584B9B]">{currentUser.name || 'زائر'}</h1>
+            <p className="text-xs text-slate-500 mt-1">{currentUser.email || 'user@example.com'} • {currentUser.role === 'organizer' ? 'منظم فعاليات' : 'زائر / مستخدم'}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setIsEditingProfile(!isEditingProfile)}
+            className="text-xs font-bold bg-purple-50 hover:bg-purple-100 text-[#584B9B] border border-purple-200 px-3.5 py-2 rounded-xl transition"
+          >
+            {isEditingProfile ? 'إلغاء التعديل' : 'تعديل بيانات الحساب'}
+          </button>
+
+          <button 
+            onClick={onOpenAuth}
+            className="text-xs font-bold bg-teal-50 hover:bg-teal-100 text-[#028090] border border-teal-200 px-3.5 py-2 rounded-xl transition"
+          >
+            تسجيل حساب جديد / تبديل
+          </button>
+
+          {currentUser.isLoggedIn && (
+            <button 
+              onClick={onLogout}
+              className="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-[#F26440] border border-rose-200 px-3.5 py-2 rounded-xl transition"
+            >
+              تسجيل خروج
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Edit Profile Form */}
+      {isEditingProfile && (
+        <form onSubmit={handleSaveProfile} className="bg-purple-50/40 border border-purple-100 rounded-3xl p-6 space-y-4 text-xs">
+          <h3 className="font-bold text-sm text-[#584B9B]">تعديل بيانات الملف الشخصي</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label className="block font-bold text-slate-700 mb-1">الاسم / اسم المستخدم *</label>
+              <input 
+                type="text" 
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium"
+              />
+            </div>
+            <div>
+              <label className="block font-bold text-slate-700 mb-1">البريد الإلكتروني *</label>
+              <input 
+                type="email" 
+                value={editEmail}
+                onChange={(e) => setEditEmail(e.target.value)}
+                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium"
+              />
+            </div>
+            <div>
+              <label className="block font-bold text-slate-700 mb-1">رقم الجوال</label>
+              <input 
+                type="text" 
+                value={editPhone}
+                onChange={(e) => setEditPhone(e.target.value)}
+                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium"
+              />
+            </div>
+          </div>
+          <button type="submit" className="bg-[#584B9B] hover:bg-[#028090] text-white font-bold px-5 py-2 rounded-xl transition">
+            حفظ التغييرات
+          </button>
+        </form>
+      )}
+
+      {/* Tabs Navigation */}
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto text-sm font-bold">
+        <button 
+          onClick={() => setTab('needs')}
+          className={`px-4 py-2.5 rounded-xl transition whitespace-nowrap ${tab === 'needs' ? 'bg-[#584B9B] text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+        >
+          احتياجاتي الخاصة (تعديل المعايير)
+        </button>
+        <button 
+          onClick={() => setTab('saved')}
+          className={`px-4 py-2.5 rounded-xl transition whitespace-nowrap ${tab === 'saved' ? 'bg-[#584B9B] text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+        >
+          الفعاليات المحفوظة ({savedEvents.length})
+        </button>
+        <button 
+          onClick={() => setTab('reviews')}
+          className={`px-4 py-2.5 rounded-xl transition whitespace-nowrap ${tab === 'reviews' ? 'bg-[#584B9B] text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+        >
+          تقييماتي السابقة
+        </button>
+      </div>
+
+      {tab === 'needs' && (
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-sm space-y-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-[#584B9B]">تخصيص احتياجات الوصول الخاصة بك</h2>
+              <p className="text-xs text-slate-500 mt-1">
+                حدد جميع وسائل المساعدة التي تلزمك. سيقوم النظام بحساب نسبة التوافق في كافة الفعاليات بناءً على هذه الاختيارات.
+              </p>
+            </div>
+
+            <button 
+              onClick={handleSaveNeeds}
+              className="px-5 py-2.5 bg-[#028090] hover:bg-teal-700 text-white rounded-xl text-xs font-bold shadow-sm transition"
+            >
+              حفظ التفضيلات
+            </button>
+          </div>
+
+          {savedAlert && (
+            <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-xl text-xs font-bold flex items-center gap-2">
+              <Icons.Check className="w-4 h-4 text-[#2E8B57]" />
+              <span>تم حفظ تفضيلات الوصول بنجاح! سيتم تطبيقها فوراً على جميع الفعاليات.</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="border border-teal-200 bg-teal-50/40 p-5 rounded-2xl space-y-3">
+              <div className="flex items-center gap-2 font-bold text-sm text-teal-950 pb-2 border-b border-teal-100">
+                <Icons.Wheelchair className="w-4 h-4 text-[#028090]" />
+                <span>المحور الحركي (Mobility)</span>
+              </div>
+              <div className="space-y-2 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.wheelchair} onChange={(e) => setUserNeeds({...userNeeds, wheelchair: e.target.checked})} className="rounded text-[#028090]" />
+                  <span>استخدام الكرسي المتحرك</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.ramps} onChange={(e) => setUserNeeds({...userNeeds, ramps: e.target.checked})} className="rounded text-[#028090]" />
+                  <span>منحدرات ممهدة عند المداخل</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.elevators} onChange={(e) => setUserNeeds({...userNeeds, elevators: e.target.checked})} className="rounded text-[#028090]" />
+                  <span>مصاعد واسعة مهيأة</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.parking} onChange={(e) => setUserNeeds({...userNeeds, parking: e.target.checked})} className="rounded text-[#028090]" />
+                  <span>مواقف سيارات قريبة ومخصصة</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.restrooms} onChange={(e) => setUserNeeds({...userNeeds, restrooms: e.target.checked})} className="rounded text-[#028090]" />
+                  <span>دورات مياه مهيأة</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.stepFree} onChange={(e) => setUserNeeds({...userNeeds, stepFree: e.target.checked})} className="rounded text-[#028090]" />
+                  <span>مسار مستوٍ خالٍ تماماً من السلالم</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="border border-rose-200 bg-rose-50/40 p-5 rounded-2xl space-y-3">
+              <div className="flex items-center gap-2 font-bold text-sm text-rose-950 pb-2 border-b border-rose-100">
+                <Icons.Ear className="w-4 h-4 text-[#F26440]" />
+                <span>المحور السمعي (Hearing)</span>
+              </div>
+              <div className="space-y-2 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.signLang} onChange={(e) => setUserNeeds({...userNeeds, signLang: e.target.checked})} className="rounded text-[#F26440]" />
+                  <span>مترجم لغة إشارة معتمد</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.captions} onChange={(e) => setUserNeeds({...userNeeds, captions: e.target.checked})} className="rounded text-[#F26440]" />
+                  <span>ترجمة نصية فورية مباشرة (Live Captions)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.hearingLoop} onChange={(e) => setUserNeeds({...userNeeds, hearingLoop: e.target.checked})} className="rounded text-[#F26440]" />
+                  <span>سماعات وأنظمة مساعدة سمعية (Hearing Loop)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.visualAlerts} onChange={(e) => setUserNeeds({...userNeeds, visualAlerts: e.target.checked})} className="rounded text-[#F26440]" />
+                  <span>شاشات وإشارات تنبيه بصرية</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="border border-purple-200 bg-purple-50/40 p-5 rounded-2xl space-y-3">
+              <div className="flex items-center gap-2 font-bold text-sm text-purple-950 pb-2 border-b border-purple-100">
+                <Icons.Eye className="w-4 h-4 text-[#584B9B]" />
+                <span>المحور البصري (Vision)</span>
+              </div>
+              <div className="space-y-2 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.audioDesc} onChange={(e) => setUserNeeds({...userNeeds, audioDesc: e.target.checked})} className="rounded text-[#584B9B]" />
+                  <span>خدمة الوصف الصوتي المباشر</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.braille} onChange={(e) => setUserNeeds({...userNeeds, braille: e.target.checked})} className="rounded text-[#584B9B]" />
+                  <span>لوحات إرشادية بطريقة برايل</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.contrast} onChange={(e) => setUserNeeds({...userNeeds, contrast: e.target.checked})} className="rounded text-[#584B9B]" />
+                  <span>لوحات تباين بصري عالٍ</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.tactile} onChange={(e) => setUserNeeds({...userNeeds, tactile: e.target.checked})} className="rounded text-[#584B9B]" />
+                  <span>مسارات أرضية لمسية (Tactile Paving)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.guideDog} onChange={(e) => setUserNeeds({...userNeeds, guideDog: e.target.checked})} className="rounded text-[#584B9B]" />
+                  <span>اصطحاب كلب مرشد للمكفوفين</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="border border-amber-200 bg-amber-50/40 p-5 rounded-2xl space-y-3">
+              <div className="flex items-center gap-2 font-bold text-sm text-amber-950 pb-2 border-b border-amber-100">
+                <Icons.Brain className="w-4 h-4 text-[#EAA812]" />
+                <span>المحور الحسي (Sensory)</span>
+              </div>
+              <div className="space-y-2 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.quietRoom} onChange={(e) => setUserNeeds({...userNeeds, quietRoom: e.target.checked})} className="rounded text-[#EAA812]" />
+                  <span>غرفة أو ركن هادئ للاستراحة</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.lowLighting} onChange={(e) => setUserNeeds({...userNeeds, lowLighting: e.target.checked})} className="rounded text-[#EAA812]" />
+                  <span>إضاءة خافتة مريحة غير وميضية</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.lowNoise} onChange={(e) => setUserNeeds({...userNeeds, lowNoise: e.target.checked})} className="rounded text-[#EAA812]" />
+                  <span>بيئة منخفضة الضوضاء والمكبرات</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-800">
+                  <input type="checkbox" checked={userNeeds.sensorySchedule} onChange={(e) => setUserNeeds({...userNeeds, sensorySchedule: e.target.checked})} className="rounded text-[#EAA812]" />
+                  <span>ساعات مخصصة للزيارة الهادئة</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {tab === 'saved' && (
+        <div className="space-y-6">
+          {savedEvents.length === 0 ? (
+            <div className="bg-white rounded-3xl p-12 text-center border border-purple-100">
+              <div className="w-12 h-12 bg-purple-50 text-[#584B9B] rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <Icons.Bookmark className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-slate-700 text-base">لم تقم بحفظ أي فعاليات بعد</h3>
+              <p className="text-xs text-slate-500 mt-1">تصفح الفعاليات في الصفحة الرئيسية واضغط على علامة الحفظ لإضافتها هنا ومتابعتها.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {savedEvents.map(event => (
+                <EventCard 
+                  key={event.id}
+                  event={event}
+                  match={getEventMatch(event)}
+                  isSaved={true}
+                  onToggleSave={() => toggleSaveEvent(event.id)}
+                  onSelect={() => onSelectEvent(event.id)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab === 'reviews' && (
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 space-y-4">
+          <h2 className="text-lg font-bold text-[#584B9B]">سجل تقييماتي بعد حضور الفعاليات</h2>
+          <div className="bg-purple-50/40 p-4 rounded-2xl border border-purple-100 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-[#584B9B]">مؤتمر الرياض للذكاء الاصطناعي 2026</span>
+              <span className="text-slate-400">10 أغسطس 2026</span>
+            </div>
+            <div className="flex items-center gap-1 text-[#EAA812]">
+              <span className="font-bold text-amber-600">5 / 5 (ممتاز)</span>
+            </div>
+            <p className="text-xs text-slate-700">
+              تجربة استثنائية من حيث سهولة التحرك واستخدام المصاعد ومساندة فريق التنظيم.
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function OrganizerDashboardView({ currentUser, eventsList, setEventsList, onSelectEvent }) {
+  const [orgTab, setOrgTab] = useState('create');
+  
+  const [newTitle, setNewTitle] = useState('');
+  const [newCategory, setNewCategory] = useState('مؤتمر تقني');
+  const [newCity, setNewCity] = useState('الرياض');
+  const [newLocation, setNewLocation] = useState('');
+  const [newDate, setNewDate] = useState('2026-11-15');
+  const [newDesc, setNewDesc] = useState('');
+  const [newFeatures, setNewFeatures] = useState({
+    hasWheelchairAccess: true,
+    hasRamps: true,
+    hasAccessibleElevators: true,
+    hasAccessibleParking: true,
+    hasAccessibleRestrooms: true,
+    hasStepFreeRoute: true,
+    hasSignLanguageInterpreter: false,
+    hasLiveCaptions: false,
+    hasHearingLoop: false,
+    hasVisualAlerts: true,
+    hasAudioDescription: false,
+    hasBrailleSignage: false,
+    hasHighContrastSignage: true,
+    hasTactilePaving: false,
+    allowsGuideDogs: true,
+    hasQuietRoom: false,
+    hasLowLightingArea: false,
+    hasLowNoiseEnvironment: false,
+    hasSensoryFriendlySchedule: false,
+  });
+
+  const calculatedScore = useMemo(() => {
+    let m = 0, h = 0, v = 0, s = 0;
+    if (newFeatures.hasWheelchairAccess) m += 25;
+    if (newFeatures.hasRamps) m += 20;
+    if (newFeatures.hasAccessibleElevators) m += 15;
+    if (newFeatures.hasAccessibleParking) m += 15;
+    if (newFeatures.hasAccessibleRestrooms) m += 15;
+    if (newFeatures.hasStepFreeRoute) m += 10;
+
+    if (newFeatures.hasSignLanguageInterpreter) h += 35;
+    if (newFeatures.hasLiveCaptions) h += 30;
+    if (newFeatures.hasHearingLoop) h += 20;
+    if (newFeatures.hasVisualAlerts) h += 15;
+
+    if (newFeatures.hasAudioDescription) v += 30;
+    if (newFeatures.hasBrailleSignage) v += 25;
+    if (newFeatures.hasHighContrastSignage) v += 20;
+    if (newFeatures.hasTactilePaving) v += 15;
+    if (newFeatures.allowsGuideDogs) v += 10;
+
+    if (newFeatures.hasQuietRoom) s += 35;
+    if (newFeatures.hasLowLightingArea) s += 20;
+    if (newFeatures.hasLowNoiseEnvironment) s += 25;
+    if (newFeatures.hasSensoryFriendlySchedule) s += 20;
+
+    const total = Math.round((Math.min(100, m) + Math.min(100, h) + Math.min(100, v) + Math.min(100, s)) / 4);
+    return { total, m: Math.min(100, m), h: Math.min(100, h), v: Math.min(100, v), s: Math.min(100, s) };
+  }, [newFeatures]);
+
+  const [selectedFacilityImage, setSelectedFacilityImage] = useState('entrance');
+  const [isAnalyzingImage, setIsAnalyzingImage] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState(null);
+
+  const handleAnalyzeImage = () => {
+    setIsAnalyzingImage(true);
+    setTimeout(() => {
+      setAnalysisResult({
+        detected: [
+          { name: 'المنحدر الخرساني الخارجي', status: 'مطابق', note: 'الميل 1:12 آمن ومزود بدرابزين مزدوج الارتفاع.' },
+          { name: 'عرض الباب الرئيسي', status: 'مطابق', note: 'العرض 98 سم ملائم لمرور الكراسي الكهربائية.' },
+          { name: 'عتبات المداخل', status: 'مطابق', note: 'المدخل مستوٍ وخالٍ من أي بروزات.' },
+          { name: 'علامات التباين على الزجاج', status: 'يحتاج تحسين', note: 'يُوصى بإضافة شريط تباين تحذيري بارتفاع 140 سم لضعاف البصر.' }
+        ],
+        score: 92,
+        recommendation: 'إضافة خطوط تباين صفراء على حواف الأبواب الزجاجية وتثبيت لوحة برايل بجانب مقبض الباب الرئيسي.'
+      });
+      setIsAnalyzingImage(false);
+    }, 1200);
+  };
+
+  const handleCreateEvent = (e) => {
+    e.preventDefault();
+    if (!newTitle.trim()) return;
+
+    const newEvt = {
+      id: `evt-custom-${Date.now()}`,
+      title: newTitle,
+      description: newDesc || 'فعالية متميزة مجهزة وفق متطلبات الوصول الشامل.',
+      category: newCategory,
+      city: newCity,
+      locationName: newLocation || 'مركز المؤتمرات والمعارض',
+      address: `${newCity}، المملكة العربية السعودية`,
+      eventDate: newDate,
+      startTime: '05:00 م',
+      endTime: '10:00 م',
+      price: 'الدخول مجاني',
+      imageUrl: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80',
+      facilityImages: [
+        'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80'
+      ],
+      organizerId: 'org-self',
+      organizerName: currentUser.name || 'إدارة الفعاليات الميسرة',
+      features: newFeatures,
+      overallScore: calculatedScore.total,
+      pillarScores: {
+        mobility: calculatedScore.m,
+        hearing: calculatedScore.h,
+        vision: calculatedScore.v,
+        sensory: calculatedScore.s,
+      },
+      reviewsCount: 0,
+      averageRating: 5.0,
+      featured: true,
+    };
+
+    setEventsList([newEvt, ...eventsList]);
+    alert('تم إنشاء الفعالية ونشرها بنجاح!');
+    setOrgTab('list');
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-[#41317B] via-[#584B9B] to-[#028090] text-white rounded-3xl p-6 sm:p-8 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <span className="text-xs font-bold text-teal-200 bg-teal-950/40 px-3 py-1 rounded-full border border-teal-400/40">
+            بوابة المنظمين وإدارة الإتاحة
+          </span>
+          <h1 className="text-2xl font-bold mt-2">لوحة تحكم منظم الفعالية ({currentUser.name || 'منظم'})</h1>
+          <p className="text-xs text-purple-100 mt-1">
+            أنشئ فعالياتك، واحصل على درجة إمكانية الوصول التلقائية واقتراحات التحسين الذكية وفحص الصور.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setOrgTab('create')}
+            className="bg-[#028090] hover:bg-teal-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm"
+          >
+            <Icons.PlusCircle className="w-4 h-4" />
+            <span>إنشاء فعالية جديدة</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 text-sm font-bold">
+        <button 
+          onClick={() => setOrgTab('create')}
+          className={`px-4 py-2.5 rounded-xl transition ${orgTab === 'create' ? 'bg-[#584B9B] text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+        >
+          معالج إنشاء فعالية وحساب الدرجة
+        </button>
+        <button 
+          onClick={() => setOrgTab('ai-inspector')}
+          className={`px-4 py-2.5 rounded-xl transition ${orgTab === 'ai-inspector' ? 'bg-[#584B9B] text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+        >
+          فحص وتحليل صور المداخل بالذكاء الاصطناعي
+        </button>
+        <button 
+          onClick={() => setOrgTab('list')}
+          className={`px-4 py-2.5 rounded-xl transition ${orgTab === 'list' ? 'bg-[#584B9B] text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+        >
+          فعالياتي المنشورة ({eventsList.length})
+        </button>
+      </div>
+
+      {orgTab === 'create' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-sm space-y-6">
+            <h2 className="text-xl font-bold text-[#584B9B]">بيانات الفعالية وقائمة تجهيزات الوصول</h2>
+
+            <form onSubmit={handleCreateEvent} className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">اسم الفعالية *</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="مثال: مؤتمر الابتكار الرقمي 2026"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-[#584B9B] text-slate-900 font-medium"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">نوع الفعالية</label>
+                    <select 
+                      value={newCategory} 
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold text-slate-800"
+                    >
+                      <option value="مؤتمر تقني">مؤتمر تقني</option>
+                      <option value="معرض فني">معرض فني</option>
+                      <option value="حفل موسيقي">حفل موسيقي</option>
+                      <option value="ورشة عمل">ورشة عمل</option>
+                      <option value="فعالية رياضية">فعالية رياضية</option>
+                      <option value="مهرجان ثقافي">مهرجان ثقافي</option>
+                      <option value="ندوة علمية">ندوة علمية</option>
+                      <option value="سوق خيري">سوق خيري</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">المدينة</label>
+                    <select 
+                      value={newCity} 
+                      onChange={(e) => setNewCity(e.target.value)}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold text-slate-800"
+                    >
+                      <option value="الرياض">الرياض</option>
+                      <option value="جدة">جدة</option>
+                      <option value="مكة المكرمة">مكة المكرمة</option>
+                      <option value="المدينة المنورة">المدينة المنورة</option>
+                      <option value="الدمام">الدمام</option>
+                      <option value="الخبر">الخبر</option>
+                      <option value="أبها">أبها</option>
+                      <option value="تبوك">تبوك</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">تاريخ الإقامة</label>
+                    <input 
+                      type="date" 
+                      value={newDate}
+                      onChange={(e) => setNewDate(e.target.value)}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">اسم المكان والقاعة</label>
+                  <input 
+                    type="text" 
+                    placeholder="مثال: مركز الملك عبد العزيز للمؤتمرات، القاعة الكبرى"
+                    value={newLocation}
+                    onChange={(e) => setNewLocation(e.target.value)}
+                    className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white text-slate-900 font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">وصف موجز للفعالية</label>
+                  <textarea 
+                    rows={2}
+                    placeholder="تفاصيل الجلسات والأنشطة والجمهور المستهدف..."
+                    value={newDesc}
+                    onChange={(e) => setNewDesc(e.target.value)}
+                    className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:border-[#584B9B] text-slate-900 font-medium"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-4 pt-4 border-t border-slate-100">
+                <h3 className="text-sm font-bold text-[#584B9B]">حدد التجهيزات المتوفرة فعلياً بالموقع:</h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <label className="flex items-center gap-2 p-3 bg-teal-50/50 rounded-xl border border-teal-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasWheelchairAccess} onChange={(e) => setNewFeatures({...newFeatures, hasWheelchairAccess: e.target.checked})} className="rounded text-[#028090]" />
+                    <span className="font-bold text-slate-800">مدخل مخصص للكراسي المتحركة</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-teal-50/50 rounded-xl border border-teal-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasRamps} onChange={(e) => setNewFeatures({...newFeatures, hasRamps: e.target.checked})} className="rounded text-[#028090]" />
+                    <span className="font-bold text-slate-800">منحدرات قياسية عند المدخل</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-teal-50/50 rounded-xl border border-teal-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasAccessibleElevators} onChange={(e) => setNewFeatures({...newFeatures, hasAccessibleElevators: e.target.checked})} className="rounded text-[#028090]" />
+                    <span className="font-bold text-slate-800">مصاعد مهيأة وواسعة</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-teal-50/50 rounded-xl border border-teal-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasAccessibleParking} onChange={(e) => setNewFeatures({...newFeatures, hasAccessibleParking: e.target.checked})} className="rounded text-[#028090]" />
+                    <span className="font-bold text-slate-800">مواقف سيارات مهيأة وقريبة</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-teal-50/50 rounded-xl border border-teal-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasAccessibleRestrooms} onChange={(e) => setNewFeatures({...newFeatures, hasAccessibleRestrooms: e.target.checked})} className="rounded text-[#028090]" />
+                    <span className="font-bold text-slate-800">دورات مياه مهيأة</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-teal-50/50 rounded-xl border border-teal-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasStepFreeRoute} onChange={(e) => setNewFeatures({...newFeatures, hasStepFreeRoute: e.target.checked})} className="rounded text-[#028090]" />
+                    <span className="font-bold text-slate-800">مسار بدون سلالم أو عتبات</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-3 bg-rose-50/50 rounded-xl border border-rose-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasSignLanguageInterpreter} onChange={(e) => setNewFeatures({...newFeatures, hasSignLanguageInterpreter: e.target.checked})} className="rounded text-[#F26440]" />
+                    <span className="font-bold text-slate-800">مترجم لغة إشارة معتمد</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-rose-50/50 rounded-xl border border-rose-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasLiveCaptions} onChange={(e) => setNewFeatures({...newFeatures, hasLiveCaptions: e.target.checked})} className="rounded text-[#F26440]" />
+                    <span className="font-bold text-slate-800">ترجمة نصية فورية مباشرة</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-rose-50/50 rounded-xl border border-rose-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasHearingLoop} onChange={(e) => setNewFeatures({...newFeatures, hasHearingLoop: e.target.checked})} className="rounded text-[#F26440]" />
+                    <span className="font-bold text-slate-800">أجهزة تضخيم وسماعات مساعدة</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-3 bg-purple-50/50 rounded-xl border border-purple-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasAudioDescription} onChange={(e) => setNewFeatures({...newFeatures, hasAudioDescription: e.target.checked})} className="rounded text-[#584B9B]" />
+                    <span className="font-bold text-slate-800">خدمة الوصف الصوتي المباشر</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-purple-50/50 rounded-xl border border-purple-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasBrailleSignage} onChange={(e) => setNewFeatures({...newFeatures, hasBrailleSignage: e.target.checked})} className="rounded text-[#584B9B]" />
+                    <span className="font-bold text-slate-800">لوحات إرشادية بطريقة برايل</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-purple-50/50 rounded-xl border border-purple-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasHighContrastSignage} onChange={(e) => setNewFeatures({...newFeatures, hasHighContrastSignage: e.target.checked})} className="rounded text-[#584B9B]" />
+                    <span className="font-bold text-slate-800">لوحات تباين بصري عالٍ</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-3 bg-amber-50/50 rounded-xl border border-amber-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasQuietRoom} onChange={(e) => setNewFeatures({...newFeatures, hasQuietRoom: e.target.checked})} className="rounded text-[#EAA812]" />
+                    <span className="font-bold text-slate-800">غرفة أو ركن استراحة هادئ</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-amber-50/50 rounded-xl border border-amber-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasLowLightingArea} onChange={(e) => setNewFeatures({...newFeatures, hasLowLightingArea: e.target.checked})} className="rounded text-[#EAA812]" />
+                    <span className="font-bold text-slate-800">إضاءة خافتة ومريحة</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 bg-amber-50/50 rounded-xl border border-amber-100 cursor-pointer">
+                    <input type="checkbox" checked={newFeatures.hasSensoryFriendlySchedule} onChange={(e) => setNewFeatures({...newFeatures, hasSensoryFriendlySchedule: e.target.checked})} className="rounded text-[#EAA812]" />
+                    <span className="font-bold text-slate-800">ساعات هادئة لتفادي الزحام</span>
+                  </label>
+                </div>
+              </div>
+
+              <button 
+                type="submit"
+                className="w-full bg-[#584B9B] hover:bg-[#028090] text-white font-bold py-3.5 rounded-xl text-sm transition shadow-md"
+              >
+                حفظ واعتماد الفعالية في المنصة
+              </button>
+            </form>
+          </div>
+
+          <div className="lg:col-span-4 space-y-6">
+            <div className="bg-white rounded-3xl p-6 border border-purple-100 shadow-sm space-y-4 text-center">
+              <span className="text-xs font-bold text-slate-600 block">
+                درجة إمكانية الوصول التلقائية للفعالية
+              </span>
+              
+              <div className="flex items-center justify-center">
+                <div className="w-28 h-28 rounded-full border-8 border-[#584B9B] flex flex-col items-center justify-center bg-purple-50/50 shadow-inner">
+                  <span className="text-3xl font-bold text-[#584B9B]">{calculatedScore.total}</span>
+                  <span className="text-[10px] text-slate-500 font-bold">من 100</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-[11px] pt-2 text-right">
+                <div className="p-2 rounded-lg bg-teal-50 text-teal-800 border border-teal-100">
+                  <span>الحركي: </span>
+                  <span className="font-bold">{calculatedScore.m}%</span>
+                </div>
+                <div className="p-2 rounded-lg bg-rose-50 text-rose-800 border border-rose-100">
+                  <span>السمعي: </span>
+                  <span className="font-bold">{calculatedScore.h}%</span>
+                </div>
+                <div className="p-2 rounded-lg bg-purple-50 text-purple-800 border border-purple-100">
+                  <span>البصري: </span>
+                  <span className="font-bold">{calculatedScore.v}%</span>
+                </div>
+                <div className="p-2 rounded-lg bg-amber-50 text-amber-800 border border-amber-100">
+                  <span>الحسي: </span>
+                  <span className="font-bold">{calculatedScore.s}%</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-3xl p-6 border border-purple-100 shadow-sm space-y-3">
+              <h3 className="text-xs font-bold text-[#584B9B] flex items-center gap-1.5">
+                <span>اقتراحات ذكية لرفع درجة الوصول</span>
+              </h3>
+              
+              <ul className="space-y-2 text-[11px] text-slate-600">
+                {!newFeatures.hasSignLanguageInterpreter && (
+                  <li className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-2">
+                    <Icons.PlusCircle className="w-4 h-4 text-[#F26440] flex-shrink-0 mt-0.5" />
+                    <span>إضافة مترجم لغة إشارة يرفع درجتك السمعية بمقدار <strong>+35 نقطة</strong>.</span>
+                  </li>
+                )}
+                {!newFeatures.hasQuietRoom && (
+                  <li className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-2">
+                    <Icons.PlusCircle className="w-4 h-4 text-[#EAA812] flex-shrink-0 mt-0.5" />
+                    <span>تخصيص ركن أو غرفة هادئة يرفع درجتك الحسية بمقدار <strong>+35 نقطة</strong>.</span>
+                  </li>
+                )}
+                {!newFeatures.hasLiveCaptions && (
+                  <li className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-2">
+                    <Icons.PlusCircle className="w-4 h-4 text-[#028090] flex-shrink-0 mt-0.5" />
+                    <span>تفعيل الترجمة الفورية على الشاشات يرفع درجتك بمقدار <strong>+30 نقطة</strong>.</span>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {orgTab === 'ai-inspector' && (
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-sm space-y-8">
+          <div className="max-w-3xl space-y-2">
+            <span className="text-xs font-bold text-[#028090] bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
+              نظام الرؤية الحاسوبية للإتاحة (Vision AI)
+            </span>
+            <h2 className="text-xl font-bold text-[#584B9B]">
+              تحليل صور المداخل والمرافق بالذكاء الاصطناعي
+            </h2>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              ارفع صوراً واقعية لمنحدرات المداخل، الأبواب، أو دورات المياه، وسيقوم الذكاء الاصطناعي بفحص مطابقتها لمعايير الوصول وتزويدك بملاحظات هندسية فورية.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <label className="block text-xs font-bold text-slate-700">اختر صورة المرفق للفحص:</label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div 
+                onClick={() => { setSelectedFacilityImage('entrance'); setAnalysisResult(null); }}
+                className={`cursor-pointer rounded-2xl border-2 p-2 transition ${selectedFacilityImage === 'entrance' ? 'border-[#584B9B] bg-purple-50/50' : 'border-slate-200'}`}
+              >
+                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" alt="المدخل الرئيسي" className="rounded-xl h-32 w-full object-cover mb-2" />
+                <span className="text-xs font-bold text-slate-800 block text-center">المدخل الرئيسي والمنحدر</span>
+              </div>
+
+              <div 
+                onClick={() => { setSelectedFacilityImage('corridor'); setAnalysisResult(null); }}
+                className={`cursor-pointer rounded-2xl border-2 p-2 transition ${selectedFacilityImage === 'corridor' ? 'border-[#584B9B] bg-purple-50/50' : 'border-slate-200'}`}
+              >
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="الممرات الداخلية" className="rounded-xl h-32 w-full object-cover mb-2" />
+                <span className="text-xs font-bold text-slate-800 block text-center">الممرات الداخلية والأبواب</span>
+              </div>
+
+              <div 
+                onClick={() => { setSelectedFacilityImage('auditorium'); setAnalysisResult(null); }}
+                className={`cursor-pointer rounded-2xl border-2 p-2 transition ${selectedFacilityImage === 'auditorium' ? 'border-[#584B9B] bg-purple-50/50' : 'border-slate-200'}`}
+              >
+                <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" alt="القاعة الرئيسية" className="rounded-xl h-32 w-full object-cover mb-2" />
+                <span className="text-xs font-bold text-slate-800 block text-center">قاعة العرض والمقاعد المهيأة</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button 
+              onClick={handleAnalyzeImage}
+              disabled={isAnalyzingImage}
+              className="bg-[#028090] hover:bg-teal-800 text-white font-bold text-xs px-6 py-3 rounded-xl transition flex items-center gap-2 shadow-sm disabled:opacity-50"
+            >
+              <span>{isAnalyzingImage ? 'جاري تحليل الصورة بالذكاء الاصطناعي...' : 'بدء فحص الصورة بالذكاء الاصطناعي'}</span>
+            </button>
+          </div>
+
+          {analysisResult && (
+            <div className="bg-purple-50/40 border border-purple-100 rounded-3xl p-6 space-y-6 animate-fadeIn">
+              <div className="flex items-center justify-between border-b border-purple-100 pb-4">
+                <div>
+                  <h3 className="font-bold text-[#584B9B] text-base">تقرير الفحص البصري للمرفق</h3>
+                  <span className="text-xs text-slate-500 font-medium">تم التحليل بنجاح وفق كود الوصول الشامل</span>
+                </div>
+                <div className="bg-emerald-50 text-[#2E8B57] border border-emerald-200 px-3 py-1 rounded-xl text-xs font-bold">
+                  درجة الإتاحة التقديرية: {analysisResult.score}%
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {analysisResult.detected.map((item, i) => (
+                  <div key={i} className="bg-white p-3.5 rounded-2xl border border-slate-200 space-y-1">
+                    <div className="flex items-center justify-between text-xs font-bold">
+                      <span className="text-slate-900">{item.name}</span>
+                      <span className={item.status === 'مطابق' ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                        {item.status}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed font-normal">{item.note}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs text-amber-900 space-y-1">
+                <span className="font-bold block">توصيات الفحص الهندسي:</span>
+                <p className="font-medium">{analysisResult.recommendation}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {orgTab === 'list' && (
+        <div className="space-y-4">
+          <h2 className="text-lg font-bold text-[#584B9B]">الفعاليات المسجلة تحت إدارتك</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {eventsList.map(event => (
+              <div key={event.id} className="bg-white p-5 rounded-2xl border border-purple-100 flex items-center justify-between shadow-sm">
+                <div className="space-y-1">
+                  <h3 className="font-bold text-sm text-[#584B9B]">{event.title}</h3>
+                  <p className="text-xs text-slate-500 font-medium">{event.city} • {event.eventDate}</p>
+                  <div className="flex items-center gap-2 pt-1">
+                    <span className="text-xs font-bold text-[#028090] bg-teal-50 px-2.5 py-0.5 rounded-md border border-teal-100">
+                      الدرجة: {event.overallScore}/100
+                    </span>
+                    <span className="text-xs text-slate-400 font-medium">
+                      {event.reviewsCount} تقييم
+                    </span>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => onSelectEvent(event.id)}
+                  className="px-3.5 py-2 bg-[#584B9B] text-white rounded-xl text-xs font-bold hover:bg-[#028090] transition shadow-sm"
+                >
+                  عرض في المنصة
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+function App() {
+  const [currentView, setCurrentView] = useState('home');
+  const [selectedEventId, setSelectedEventId] = useState('evt-001');
+  const [eventsList, setEventsList] = useState(initialEvents);
+  
+  // Default Saved Events starts EMPTY (0)
+  const [savedEventIds, setSavedEventIds] = useState([]);
+
+  // Schedule Conflict Modal State
+  const [conflictWarning, setConflictWarning] = useState(null);
+
+  // Authentication State (Default: زائر)
+  const [currentUser, setCurrentUser] = useState({
+    id: 'usr-guest',
+    name: 'زائر',
+    email: 'guest@example.com',
+    phone: '',
+    role: 'visitor',
+    isLoggedIn: false,
+  });
+
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authTab, setAuthTab] = useState('login'); // 'login' or 'register'
+  const [authName, setAuthName] = useState('');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authRole, setAuthRole] = useState('visitor');
+  const [authError, setAuthError] = useState('');
+
+  // Filters
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCity, setSelectedCity] = useState('الكل');
+  const [selectedCategory, setSelectedCategory] = useState('الكل');
+
+  // User Accessibility Needs State (4 Pillars)
+  const [userNeeds, setUserNeeds] = useState({
+    wheelchair: false,
+    ramps: false,
+    elevators: false,
+    parking: false,
+    restrooms: false,
+    stepFree: false,
+    signLang: false,
+    captions: false,
+    hearingLoop: false,
+    visualAlerts: false,
+    audioDesc: false,
+    braille: false,
+    contrast: false,
+    tactile: false,
+    guideDog: false,
+    quietRoom: false,
+    lowLighting: false,
+    lowNoise: false,
+    sensorySchedule: false,
+  });
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    if (!authEmail.trim()) {
+      setAuthError('يرجى إدخال البريد الإلكتروني أو اسم المستخدم.');
+      return;
+    }
+    const displayName = authEmail.split('@')[0] || 'زائر';
+    setCurrentUser({
+      id: `usr-${Date.now()}`,
+      name: displayName,
+      email: authEmail,
+      phone: '',
+      role: 'visitor',
+      isLoggedIn: true,
+    });
+    setShowAuthModal(false);
+    setAuthError('');
+  };
+
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    if (!authName.trim()) {
+      setAuthError('يرجى إدخال اسمك.');
+      return;
+    }
+    if (!authEmail.trim()) {
+      setAuthError('يرجى إدخال بريدك الإلكتروني.');
+      return;
+    }
+    setCurrentUser({
+      id: `usr-${Date.now()}`,
+      name: authName.trim(),
+      email: authEmail.trim(),
+      phone: '',
+      role: authRole,
+      isLoggedIn: true,
+    });
+    setShowAuthModal(false);
+    setAuthError('');
+    if (authRole === 'organizer') {
+      setCurrentView('organizer-dashboard');
+    } else {
+      setCurrentView('user-dashboard');
+    }
+  };
+
+  const handleLogout = () => {
+    setCurrentUser({
+      id: 'usr-guest',
+      name: 'زائر',
+      email: 'guest@example.com',
+      phone: '',
+      role: 'visitor',
+      isLoggedIn: false,
+    });
+    setSavedEventIds([]);
+    alert('تم تسجيل الخروج بنجاح.');
+    setCurrentView('home');
+  };
+
+  const toggleSaveEvent = (id) => {
+    if (savedEventIds.includes(id)) {
+      setSavedEventIds(savedEventIds.filter(item => item !== id));
+    } else {
+      const targetEvent = eventsList.find(e => e.id === id);
+      if (targetEvent) {
+        const conflicting = eventsList.find(
+          e => savedEventIds.includes(e.id) && e.eventDate === targetEvent.eventDate
+        );
+        if (conflicting) {
+          setConflictWarning({
+            newEvent: targetEvent,
+            existingEvent: conflicting,
+          });
+          return;
+        }
+      }
+      setSavedEventIds([...savedEventIds, id]);
+    }
+  };
+
+  const confirmConflictingSave = () => {
+    if (conflictWarning) {
+      setSavedEventIds([...savedEventIds, conflictWarning.newEvent.id]);
+      setConflictWarning(null);
+    }
+  };
+
+  const getEventMatch = (event) => {
+    const reqMap = [
+      { need: userNeeds.wheelchair, has: event.features.hasWheelchairAccess, label: 'كراسي متحركة' },
+      { need: userNeeds.ramps, has: event.features.hasRamps, label: 'منحدرات' },
+      { need: userNeeds.elevators, has: event.features.hasAccessibleElevators, label: 'مصاعد مهيأة' },
+      { need: userNeeds.parking, has: event.features.hasAccessibleParking, label: 'مواقف مهيأة' },
+      { need: userNeeds.restrooms, has: event.features.hasAccessibleRestrooms, label: 'دورات مياه مهيأة' },
+      { need: userNeeds.stepFree, has: event.features.hasStepFreeRoute, label: 'مسار بدون سلالم' },
+      { need: userNeeds.signLang, has: event.features.hasSignLanguageInterpreter, label: 'لغة إشارة' },
+      { need: userNeeds.captions, has: event.features.hasLiveCaptions, label: 'ترجمة فورية' },
+      { need: userNeeds.hearingLoop, has: event.features.hasHearingLoop, label: 'سماعات مساعدة' },
+      { need: userNeeds.visualAlerts, has: event.features.hasVisualAlerts, label: 'إرشادات بصرية' },
+      { need: userNeeds.audioDesc, has: event.features.hasAudioDescription, label: 'وصف صوتي' },
+      { need: userNeeds.braille, has: event.features.hasBrailleSignage, label: 'لوحات برايل' },
+      { need: userNeeds.contrast, has: event.features.hasHighContrastSignage, label: 'تباين لوني عالٍ' },
+      { need: userNeeds.tactile, has: event.features.hasTactilePaving, label: 'مسارات لمسية' },
+      { need: userNeeds.guideDog, has: event.features.allowsGuideDogs, label: 'كلاب مرشدة' },
+      { need: userNeeds.quietRoom, has: event.features.hasQuietRoom, label: 'غرفة هادئة' },
+      { need: userNeeds.lowLighting, has: event.features.hasLowLightingArea, label: 'إضاءة خافتة' },
+      { need: userNeeds.lowNoise, has: event.features.hasLowNoiseEnvironment, label: 'بيئة هادئة' },
+      { need: userNeeds.sensorySchedule, has: event.features.hasSensoryFriendlySchedule, label: 'ساعات هادئة' },
+    ];
+
+    const activeReqs = reqMap.filter(r => r.need);
+    if (activeReqs.length === 0) return { percentage: event.overallScore, missing: [] };
+    
+    const matched = activeReqs.filter(r => r.has);
+    const missing = activeReqs.filter(r => !r.has).map(r => r.label);
+    const pct = Math.round((matched.length / activeReqs.length) * 100);
+    return { percentage: pct, missing };
+  };
+
+  const filteredEvents = useMemo(() => {
+    return eventsList.filter(e => {
+      const matchQuery = e.title.includes(searchQuery) || e.locationName.includes(searchQuery) || e.description.includes(searchQuery);
+      const matchCity = selectedCity === 'الكل' || e.city === selectedCity;
+      const matchCat = selectedCategory === 'الكل' || e.category === selectedCategory;
+      return matchQuery && matchCity && matchCat;
+    });
+  }, [eventsList, searchQuery, selectedCity, selectedCategory]);
+
+  const selectedEvent = useMemo(() => {
+    return eventsList.find(e => e.id === selectedEventId) || eventsList[0];
+  }, [eventsList, selectedEventId]);
+
+  return (
+    <div className="flex flex-col min-h-screen font-sans">
+      {/* Clean White & Crisp Header */}
+      <header className="bg-white text-slate-900 sticky top-0 z-50 shadow-sm border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            <div 
+              className="cursor-pointer transition hover:opacity-90 flex items-center"
+              onClick={() => setCurrentView('home')}
+            >
+              <BrandLogo size="md" isDark={false} />
+            </div>
+
+            <nav className="hidden md:flex items-center gap-1.5 font-bold text-sm">
+              <button 
+                onClick={() => setCurrentView('home')}
+                className={`px-4 py-2.5 rounded-xl transition ${currentView === 'home' ? 'bg-[#0F172A] text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100'}`}
+              >
+                الرئيسية
+              </button>
+              <button 
+                onClick={() => setCurrentView('user-dashboard')}
+                className={`px-4 py-2.5 rounded-xl transition ${currentView === 'user-dashboard' ? 'bg-[#0F172A] text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100'}`}
+              >
+                لوحة الزائر
+              </button>
+              <button 
+                onClick={() => setCurrentView('organizer-dashboard')}
+                className={`px-4 py-2.5 rounded-xl transition ${currentView === 'organizer-dashboard' ? 'bg-[#0F172A] text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100'}`}
+              >
+                لوحة المنظم
+              </button>
+            </nav>
+
+            <div className="flex items-center gap-3">
+              {currentUser.isLoggedIn ? (
+                <button 
+                  onClick={() => setCurrentView('user-dashboard')}
+                  className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold px-3 py-2 rounded-xl transition text-slate-800"
+                >
+                  <div className="w-6 h-6 rounded-full bg-slate-300 flex items-center justify-center overflow-hidden">
+                    <Icons.UserAvatarSilhouette className="w-5 h-5 text-slate-600" />
+                  </div>
+                  <span className="hidden sm:inline">{currentUser.name}</span>
+                </button>
+              ) : (
+                <button 
+                  onClick={() => { setShowAuthModal(true); setAuthTab('login'); }}
+                  className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-900 hover:text-white border-2 border-slate-900 text-xs font-bold px-4 py-2.5 rounded-xl transition text-slate-900 shadow-sm"
+                >
+                  <div className="w-5 h-5 rounded-full bg-slate-300 flex items-center justify-center">
+                    <Icons.UserAvatarSilhouette className="w-4 h-4 text-slate-700" />
+                  </div>
+                  <span>تسجيل الدخول</span>
+                </button>
+              )}
+
+              <button 
+                onClick={() => setCurrentView('user-dashboard')}
+                className="relative p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 transition"
+                title="الفعاليات المحفوظة"
+              >
+                <Icons.Bookmark className="w-5 h-5" filled={savedEventIds.length > 0} />
+                {savedEventIds.length > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-[#F26440] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-sm">
+                    {savedEventIds.length}
+                  </span>
+                )}
+              </button>
+
+              <button 
+                onClick={() => setCurrentView('organizer-dashboard')}
+                className="hidden sm:flex items-center gap-2 bg-[#028090] hover:bg-teal-700 text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-sm transition"
+              >
+                <Icons.PlusCircle className="w-4 h-4" />
+                <span>إضافة فعالية</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Routing */}
+      <main className="flex-grow">
+        {currentView === 'home' && (
+          <HomeView 
+            events={filteredEvents}
+            allEvents={eventsList}
+            userNeeds={userNeeds}
+            setUserNeeds={setUserNeeds}
+            getEventMatch={getEventMatch}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            savedEventIds={savedEventIds}
+            toggleSaveEvent={toggleSaveEvent}
+            onSelectEvent={(id) => {
+              setSelectedEventId(id);
+              setCurrentView('event-details');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onOpenDashboard={() => setCurrentView('user-dashboard')}
+            onOpenAuth={() => setShowAuthModal(true)}
+            currentUser={currentUser}
+          />
+        )}
+
+        {currentView === 'event-details' && (
+          <EventDetailsView 
+            event={selectedEvent}
+            userNeeds={userNeeds}
+            getEventMatch={getEventMatch}
+            savedEventIds={savedEventIds}
+            toggleSaveEvent={toggleSaveEvent}
+            onBack={() => setCurrentView('home')}
+          />
+        )}
+
+        {currentView === 'user-dashboard' && (
+          <UserDashboardView 
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            onOpenAuth={() => setShowAuthModal(true)}
+            onLogout={handleLogout}
+            userNeeds={userNeeds}
+            setUserNeeds={setUserNeeds}
+            eventsList={eventsList}
+            savedEventIds={savedEventIds}
+            toggleSaveEvent={toggleSaveEvent}
+            getEventMatch={getEventMatch}
+            onSelectEvent={(id) => {
+              setSelectedEventId(id);
+              setCurrentView('event-details');
+            }}
+          />
+        )}
+
+        {currentView === 'organizer-dashboard' && (
+          <OrganizerDashboardView 
+            currentUser={currentUser}
+            eventsList={eventsList}
+            setEventsList={setEventsList}
+            onSelectEvent={(id) => {
+              setSelectedEventId(id);
+              setCurrentView('event-details');
+            }}
+          />
+        )}
+      </main>
+
+      {/* Conflict Warning Modal */}
+      {conflictWarning && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 relative shadow-2xl border-2 border-[#F26440]">
+            <div className="w-12 h-12 bg-rose-100 text-[#F26440] rounded-2xl flex items-center justify-center mx-auto">
+              <Icons.AlertTriangle className="w-6 h-6" />
+            </div>
+
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-bold text-slate-900">تنبيه: تعارض في مواعيد الفعاليات</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                لديك فعالية محفوظة مسبقاً في نفس التاريخ:
+              </p>
+              <div className="bg-rose-50 p-3 rounded-xl border border-rose-200 text-xs text-right space-y-1">
+                <p className="font-bold text-[#F26440]">{conflictWarning.existingEvent.title}</p>
+                <p className="text-slate-500">التاريخ: {conflictWarning.existingEvent.eventDate} ({conflictWarning.existingEvent.startTime} - {conflictWarning.existingEvent.endTime})</p>
+              </div>
+              <p className="text-xs text-slate-600 pt-1">
+                هل ترغب في حفظ فعالية <strong>«{conflictWarning.newEvent.title}»</strong> على الرغم من تعارض الموعد؟
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button 
+                onClick={confirmConflictingSave}
+                className="flex-1 bg-[#F26440] hover:bg-rose-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-sm"
+              >
+                تأكيد الحفظ على أي حال
+              </button>
+              <button 
+                onClick={() => setConflictWarning(null)}
+                className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-xs transition"
+              >
+                إلغاء
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 relative shadow-2xl border border-slate-200">
+            <button 
+              onClick={() => { setShowAuthModal(false); setAuthError(''); }}
+              className="absolute top-5 left-5 text-slate-400 hover:text-slate-600 p-1 rounded-lg"
+            >
+              <Icons.X className="w-5 h-5" />
+            </button>
+
+            <div className="text-center space-y-2">
+              <div className="flex justify-center">
+                <BrandLogo size="sm" isDark={false} showSubtitle={false} />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900">
+                {authTab === 'login' ? 'تسجيل الدخول إلى حسابك' : 'إنشاء حساب جديد في منصة مَعَك'}
+              </h3>
+            </div>
+
+            <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+              <button 
+                onClick={() => { setAuthTab('login'); setAuthError(''); }}
+                className={`flex-1 py-2.5 rounded-lg transition ${authTab === 'login' ? 'bg-[#0F172A] text-white shadow-sm' : 'text-slate-700 hover:bg-slate-200'}`}
+              >
+                تسجيل الدخول
+              </button>
+              <button 
+                onClick={() => { setAuthTab('register'); setAuthError(''); }}
+                className={`flex-1 py-2.5 rounded-lg transition ${authTab === 'register' ? 'bg-[#0F172A] text-white shadow-sm' : 'text-slate-700 hover:bg-slate-200'}`}
+              >
+                إنشاء حساب جديد
+              </button>
+            </div>
+
+            {authError && (
+              <div className="bg-rose-50 border border-rose-200 text-[#F26440] p-3 rounded-xl text-xs font-bold text-center">
+                {authError}
+              </div>
+            )}
+
+            {authTab === 'login' && (
+              <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1.5">البريد الإلكتروني أو اسم المستخدم</label>
+                  <input 
+                    type="text"
+                    required
+                    placeholder="user@example.com"
+                    value={authEmail}
+                    onChange={(e) => setAuthEmail(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-slate-900 text-slate-900 font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1.5">كلمة المرور</label>
+                  <input 
+                    type="password"
+                    required
+                    placeholder="••••••••"
+                    value={authPassword}
+                    onChange={(e) => setAuthPassword(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-slate-900 text-slate-900 font-medium"
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  className="w-full bg-[#0F172A] hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-md text-sm mt-2"
+                >
+                  تسجيل الدخول
+                </button>
+              </form>
+            )}
+
+            {authTab === 'register' && (
+              <form onSubmit={handleRegisterSubmit} className="space-y-4 text-xs">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1.5">الاسم الكامل *</label>
+                  <input 
+                    type="text"
+                    required
+                    placeholder="مثال: زائر"
+                    value={authName}
+                    onChange={(e) => setAuthName(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-slate-900 text-slate-900 font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1.5">البريد الإلكتروني *</label>
+                  <input 
+                    type="email"
+                    required
+                    placeholder="user@example.com"
+                    value={authEmail}
+                    onChange={(e) => setAuthEmail(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-slate-900 text-slate-900 font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1.5">كلمة المرور *</label>
+                  <input 
+                    type="password"
+                    required
+                    placeholder="••••••••"
+                    value={authPassword}
+                    onChange={(e) => setAuthPassword(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-slate-900 text-slate-900 font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1.5">نوع الحساب *</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <label className={`flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer font-bold transition ${authRole === 'visitor' ? 'border-[#0F172A] bg-slate-100 text-slate-900' : 'border-slate-200 bg-slate-50 text-slate-600'}`}>
+                      <input type="radio" name="roleSelect" checked={authRole === 'visitor'} onChange={() => setAuthRole('visitor')} className="sr-only" />
+                      <span>زائر / مستخدم</span>
+                    </label>
+                    <label className={`flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer font-bold transition ${authRole === 'organizer' ? 'border-[#028090] bg-teal-50 text-[#028090]' : 'border-slate-200 bg-slate-50 text-slate-600'}`}>
+                      <input type="radio" name="roleSelect" checked={authRole === 'organizer'} onChange={() => setAuthRole('organizer')} className="sr-only" />
+                      <span>منظم فعاليات</span>
+                    </label>
+                  </div>
+                </div>
+
+                <button 
+                  type="submit"
+                  className="w-full bg-[#0F172A] hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-md text-sm mt-2"
+                >
+                  إنشاء الحساب وبدء الاستخدام
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Footer in Deep Charcoal */}
+      <footer className="bg-[#0F172A] text-slate-300 border-t border-slate-800 mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="md:col-span-2 space-y-4">
+              <BrandLogo size="lg" isDark={true} />
+              <p className="text-sm text-slate-400 max-w-md leading-relaxed mt-3 font-normal">
+                المنصة الوطنية الرائدة لتمكين الأشخاص ذوي الإعاقة من اكتشاف الفعاليات والمؤتمرات الملائمة لاحتياجاتهم، ومساندة المنظمين في رفع معايير الوصول الشامل بالمملكة العربية السعودية.
+              </p>
+              <div className="flex items-center gap-3 pt-2 text-xs text-slate-400 font-medium">
+                <span className="flex items-center gap-1 bg-white/10 px-3 py-1.5 rounded-full border border-white/20">
+                  <Icons.ShieldCheck className="w-4 h-4 text-teal-400" />
+                  متوافق مع معايير WCAG AA
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold text-sm mb-4 border-r-2 border-teal-400 pr-2">
+                محاور الإتاحة الأربعة
+              </h4>
+              <ul className="space-y-2.5 text-xs text-slate-400">
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#028090]"></span>
+                  <span>المحور الحركي (كراسي، منحدرات، مصاعد)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#F26440]"></span>
+                  <span>المحور السمعي (لغة إشارة، ترجمة فورية)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#028090]"></span>
+                  <span>المحور البصري (وصف صوتي، لوحات برايل)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#EAA812]"></span>
+                  <span>المحور الحسي (غرف هادئة، إضاءة مريحة)</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold text-sm mb-4 border-r-2 border-emerald-400 pr-2">
+                روابط سريعة
+              </h4>
+              <ul className="space-y-2 text-xs text-slate-400">
+                <li><a href="#" onClick={(e) => { e.preventDefault(); setCurrentView('home'); }} className="hover:text-white transition">استكشاف جميع الفعاليات</a></li>
+                <li><a href="#" onClick={(e) => { e.preventDefault(); setCurrentView('user-dashboard'); }} className="hover:text-white transition">تخصيص احتياجاتي الخاصة</a></li>
+                <li><a href="#" onClick={(e) => { e.preventDefault(); setCurrentView('organizer-dashboard'); }} className="hover:text-white transition">لوحة المنظمين وتقييم الفعالية</a></li>
+                <li><a href="#" onClick={(e) => { e.preventDefault(); setCurrentView('organizer-dashboard'); }} className="hover:text-white transition">فحص المداخل بالذكاء الاصطناعي</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-slate-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+            <p>جميع الحقوق محفوظة لمنصة «مَعَك» © 2026</p>
+            <div className="flex items-center gap-6">
+              <span>اكتشف • شارك • استمتع</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);

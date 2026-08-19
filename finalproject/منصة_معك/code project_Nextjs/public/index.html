@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مَعَك | فعاليات للجميع بلا عوائق</title>
+  
+  <!-- Premium Fonts: Alexandria & Readex Pro for Thmanyah-Style Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Thmanyah', 'thmanyah Sans', 'thmanyah Serif', 'Alexandria', 'Readex Pro', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              teal: '#028090',
+              tealLight: '#E6F4F5',
+              coral: '#F26440',
+              coralLight: '#FDEEE9',
+              amber: '#EAA812',
+              amberLight: '#FEF6E7',
+              green: '#2E8B57',
+              greenLight: '#EAF6EE',
+              slateDark: '#0F172A',
+              slateCard: '#1E293B',
+              slateBg: '#F8FAFC',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    @font-face {
+      font-family: 'Thmanyah';
+      src: local('thmanyah Sans'), local('thmanyah'), local('Thmanyah Sans'), local('thmanyah-sans'), local('thmanyah Serif');
+    }
+    
+    * {
+      font-family: 'Thmanyah', 'thmanyah Sans', 'thmanyah Serif', 'Alexandria', 'Readex Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+      letter-spacing: -0.01em;
+    }
+    
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+    .focus-ring:focus-visible {
+      outline: 3px solid #028090;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel" src="./app.js"></script>
+</body>
+</html>
